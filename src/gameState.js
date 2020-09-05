@@ -26,22 +26,29 @@ class GameState {
     this.enemies.push(createEnemy(
       20, 50, 15, 15
     ))
+    this.enemies.push(createEnemy(
+      20, 55, 15, 15
+    ))
+    this.enemies.push(createEnemy(
+      20, 60, 15, 15
+    ))
 
-    for (let i = 0; i < numberOfEnemies; i++) {
-      const x = 20
-      const y = Math.floor(Math.random() * 400)
-      const random = Math.floor(Math.random() * 5) + 3 
-      const width = random
-      const height = random + 1
-      this.enemies.push(createEnemy(x, y, width, height))
-    }
+    // for (let i = 0; i < numberOfEnemies; i++) {
+    //   const x = 20
+    //   const y = Math.floor(Math.random() * 400)
+    //   const random = Math.floor(Math.random() * 5) + 3 
+    //   const width = random
+    //   const height = random + 1
+    //   this.enemies.push(createEnemy(x, y, width, height))
+    // }
     
   }
 
   incBlood (x, y, angle) {
     const newX = x +  Math.floor(Math.random() * 3) -1
     const newY = y +  Math.floor(Math.random() * 3) -1
-    this.blood.push(createBlood(newX, newY, angle))
+    // this.blood.push(createBlood(newX, newY, angle))
+    this.blood.push(createBlood(x, y, angle))
   }
 
   getBlood () {

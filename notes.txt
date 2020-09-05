@@ -9,5 +9,6 @@ TODO:
 * Perhaps 404 levels and they sometimes drop medpack?
 * Maybe shoot pattern should be a little random? === Spray
 * Maybe reload?
+* enemies colliding but dont really stop colliding... Maybe need to do as in collision-function. top, bot and so on. 
 
-* Reduce file size
+* Reduce file size: Think it's ok now.

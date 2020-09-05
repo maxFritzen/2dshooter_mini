@@ -4,7 +4,7 @@ kontra.initKeys();
 
 const newPlayer = new Player(
   150,
-  250,
+  50,
   'blue',
   3,
   5,
@@ -30,8 +30,8 @@ gameState.incEnemies()
 let loop = kontra.GameLoop({
   update: function() {
     gameState.getPlayer().update();
-    gameState.getBlood().map(sprite => sprite.update())
     gameState.getEnemies().map(sprite => sprite.update())
+    gameState.getBlood().map(sprite => sprite.update())
     gameState.getProjectiles().map(sprite => sprite.update())
     gameState.getFireEffects().map(sprite => sprite.update())
     gameState.removeEnemies()
@@ -44,10 +44,10 @@ let loop = kontra.GameLoop({
 
   },
   render: function() {
-    gameState.getBlood().map(sprite => sprite.render())
     gameState.getPlayer().render();
     gameState.getEnemies().map(sprite => sprite.render())
     gameState.getProjectiles().map(sprite => sprite.render())
+    gameState.getBlood().map(sprite => sprite.render())
     gameState.getFireEffects().map(sprite => sprite.render())
   }
 });
