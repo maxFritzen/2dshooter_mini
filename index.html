@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Getting Started</title>
+  </head>
+  <style>
+    body {
+      color: green;
+      background: black;
+    }
+
+    .gameCanvas {
+      width: 800px;
+      height: 600px;
+      border: 5px solid white;
+      margin: 0 auto;
+      display: block;
+    }
+  </style>
+  <body>
+    <h1>Hejsan</h1>
+    <canvas class='gameCanvas'></canvas>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/kontra@7.1.2/kontra.min.js"></script>
+  <script src='./src/helper-functions.js'></script>
+  <script src='./src/gameState.js'></script>
+  <script src='./src/object.js'></script>
+  <script src='./src/enemy.js'></script>
+  <script src='./src/player.js'></script>
+  <script src='./index.js'></script>
+  <script>
+    kontra.init()
+  </script>
+</html>

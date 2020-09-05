@@ -1,0 +1,13 @@
+TODO:
+
+* Take dmg
+* lose
+* win
+
+
+* should enemy drop something? Not found - theme.
+* Perhaps 404 levels and they sometimes drop medpack?
+* Maybe shoot pattern should be a little random? === Spray
+* Maybe reload?
+
+* Reduce file size
