@@ -22,7 +22,7 @@ const createEnemy = (x, y, width, height, target) => new Enemy(
   width,
   height,
   Math.floor(Math.random() * 10) + 5,
-  10,
+  width / 3,
   target,
   Math.random()
 )

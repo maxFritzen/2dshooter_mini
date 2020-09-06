@@ -42,7 +42,7 @@ function createProjectile (x, y, angle) {
             gameState.incBlood(this.x, this.y, angle)
             this.height = 5
             this.width = 8
-            enemy.hit(1);
+            enemy.hit(3);
             this.ttl = 0;
             break
         }
@@ -69,16 +69,22 @@ function createFireEffect (x, y, angle) {
   return projectile
 }
 
-function createBlood (x, y, angle) {
+function createBlood (x, y, angle, width = 2, height = 2) {
   const blood = Sprite({
     id: x + y + angle, 
-    x: x,
-    y: y,
-    width: 2,
-    height: 2,
+    x,
+    y,
+    width,
+    height,
     rotation: angle,
     color: 'red',
-    ttl: 300
+    ttl: 300, 
+    render () {
+      this.context.fillStyle = this.color
+      this.context.beginPath()
+      this.context.arc(0, 0, width / 2, 0, 2 * Math.PI)
+      this.context.fill()
+    }
   })
   return blood
 }
