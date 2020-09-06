@@ -56,16 +56,16 @@ class Enemy extends Obj {
           const collidingEnemyY = enemies[i].y
           // if dir === right OR left => go up or down
           if (direction === 'left' && direction === 'right') {
-            if (newY <= collidingEnemyY) {
-              newY -= 2
-            } else if (newY >= collidingEnemyY) {
-              newY+= 2
+            if (newY < collidingEnemyY) {
+              newY -= 1
+            } else if (newY > collidingEnemyY) {
+              newY += 1
             }
           } else {
-            if (newX <= collidingEnemyX) {
-              newX -= 2
-            } else  if (newX >= collidingEnemyX) {
-              newX += 2
+            if (newX < collidingEnemyX) {
+              newX -= 1
+            } else  if (newX > collidingEnemyX) {
+              newX += 1
             } 
           }
           
