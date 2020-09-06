@@ -80,7 +80,7 @@ class GameState {
         gameState.getFireEffects().map(sprite => sprite.render())
         gameState.getPlayer().render();
         if (!gameState.gameIsRunning) {
-          getText(`You died on ${gameState.getLevel()} \nPlay again?  Press y`).render()
+          getText(`You made it to level ${gameState.getLevel()}! \nPlay again?  Press y`).render()
         }
       }
     })
@@ -110,24 +110,24 @@ class GameState {
     const stages = [ 100, 200, 302, 403 ]
     const numberOfEnemies = stages[this.level]
     const target = this.getPlayer()
-    this.enemies.push(createEnemy(
-      20, 50, 15, 15, target
-    ))
-    this.enemies.push(createEnemy(
-      20, 55, 15, 15, target
-    ))
-    this.enemies.push(createEnemy(
-      20, 60, 15, 15, target
-    ))
+    // this.enemies.push(createEnemy(
+    //   20, 50, 15, 15, target
+    // ))
+    // this.enemies.push(createEnemy(
+    //   20, 55, 15, 15, target
+    // ))
+    // this.enemies.push(createEnemy(
+    //   20, 60, 15, 15, target
+    // ))
 
-    // for (let i = 0; i < numberOfEnemies; i++) {
-    //   const x = 20
-    //   const y = Math.floor(Math.random() * 400)
-    //   const random = Math.floor(Math.random() * 5) + 3 
-    //   const width = random
-    //   const height = random + 1
-    //   this.enemies.push(createEnemy(x, y, width, height, target))
-    // }
+    for (let i = 0; i < numberOfEnemies; i++) {
+      const x = Math.floor(Math.random() * 75) - 65
+      const y = Math.floor(Math.random() * 400)
+      const random = Math.floor(Math.random() * 5) + 3 
+      const width = random
+      const height = random + 1
+      this.enemies.push(createEnemy(x, y, width, height, target))
+    }
     
   }
 

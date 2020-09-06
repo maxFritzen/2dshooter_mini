@@ -3,7 +3,7 @@ TODO:
 * Take dmg
 * healthpacks? Or like cod?
 * lose
-* win
+* win (you dont?)
 
 *Stop game
 *Start game
@@ -13,5 +13,7 @@ TODO:
 * Perhaps 404 levels and they sometimes drop medpack?
 * Maybe shoot pattern should be a little random? === Spray
 * Maybe reload? Automatically yes.
+
+* maybe rotation have to be no just up/left/down/right.
 
 * Reduce file size: Think it's ok now.
