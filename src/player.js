@@ -32,7 +32,6 @@ class Player extends Obj {
 
     if (keyPressed('left')) {
       // this.rotate('left')
-      console.log('rotate left')
       this.rotation += degToRad(-4)
       const cos = Math.cos(this.rotation)
       const sin = Math.sin(this.rotation)
