@@ -95,7 +95,10 @@ class GameState {
   }
 
   incProjectiles (x, y, angle) {
-    const newProjectile = createProjectile(x, y, angle)
+    const randAngle = angle + (Math.random() / 30 - Math.random() / 30)
+    console.log('angle: ', angle)
+    console.log('Randangle: ', randAngle)
+    const newProjectile = createProjectile(x, y, randAngle)
     const newFireEffect = createFireEffect(x, y, angle)
     this.projectiles.push(newProjectile)
     this.fireEffects.push(newFireEffect)
