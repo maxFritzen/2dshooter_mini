@@ -102,6 +102,7 @@ class Player extends Obj {
     // collision with enemy
     this.collisionCheck()
   } 
+
   collisionCheck () {
     const enemies = gameState.getEnemies()
     if (this.collisionInterval) return
@@ -109,7 +110,7 @@ class Player extends Obj {
       if (collision(this, enemy)) {
         console.log('collisison with enemy')
         this.context.filter = `blur(0.8px)`
-        this.hit(5)
+        this.hit(10)
         setTimeout(() => this.context.filter = 'none', 200)
         this.collisionInterval = setTimeout(() => {
           this.collisionInterval = null
@@ -117,6 +118,12 @@ class Player extends Obj {
         }, 1000)
       }
     })
+  }
+
+  die () {
+    this.ttl = 0
+    this.color = 'purple'
+    stop()
   }
 
 }

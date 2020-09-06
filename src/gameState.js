@@ -1,11 +1,97 @@
+
+
 class GameState {
   constructor () {
-    this.level = 0;
+    this.level = 1;
     this.enemies = [];
     this.projectiles = [];
     this.fireEffects = [];
-    this.player = newPlayer
+    this.player = null
     this.blood = []
+    this.gameIsRunning = true
+    this.hasStartedGame = false
+    this.loop = null
+    this.text = getText()
+  }
+
+  setHasStartedGame () {
+    this.hasStartedGame = true
+  }
+
+  setGameIsRunning (bool) {
+    this.gameIsRunning = bool
+  }
+
+  startGame () {
+    this.level = 1;
+    this.enemies = [];
+    this.projectiles = [];
+    this.fireEffects = [];
+    this.blood = []
+    this.player = createNewPlayer()
+    this.incEnemies()
+    if (this.loop) {
+      this.loop.stop()
+    }
+    
+  
+    
+
+    this.loop = kontra.GameLoop({
+      update: function() {
+        if (!gameState.hasStartedGame) {
+          if (kontra.keyPressed('y')) {
+            console.log('pressed y')
+            gameState.setHasStartedGame()
+          }
+          return
+        }
+
+        gameState.getPlayer().update();
+        gameState.getEnemies().map(sprite => sprite.update())
+        gameState.getBlood().map(sprite => sprite.update())
+        gameState.getProjectiles().map(sprite => sprite.update())
+        gameState.getFireEffects().map(sprite => sprite.update())
+        gameState.removeEnemies()
+        gameState.removeProjectiles()
+        gameState.removeFireEffects()
+        if (gameState.getEnemies().length <= 0) {
+          gameState.incLevel()
+          gameState.incEnemies()
+        }
+        if (!gameState.gameIsRunning) {
+          if (kontra.keyPressed('y')) {
+            console.log('dead press y')
+            gameState.setGameIsRunning(true)
+            gameState.startGame()
+          }
+        }
+
+    
+      },
+      render: function() {
+        if (!gameState.hasStartedGame) {
+          getText('Start game? \n Press y').render()
+          return
+        }
+        gameState.getEnemies().map(sprite => sprite.render())
+        gameState.getProjectiles().map(sprite => sprite.render())
+        gameState.getBlood().map(sprite => sprite.render())
+        gameState.getFireEffects().map(sprite => sprite.render())
+        gameState.getPlayer().render();
+        if (!gameState.gameIsRunning) {
+          getText(`You died on ${gameState.getLevel()} \nPlay again?  Press y`).render()
+        }
+      }
+    })
+
+    this.loop.start()
+  }
+
+  stopGame () {
+    this.gameIsRunning = false
+    console.log('stopgame')
+    
   }
 
   incProjectiles (x, y, angle) {
@@ -23,14 +109,15 @@ class GameState {
   incEnemies () {
     const stages = [ 100, 200, 302, 403 ]
     const numberOfEnemies = stages[this.level]
+    const target = this.getPlayer()
     this.enemies.push(createEnemy(
-      20, 50, 15, 15
+      20, 50, 15, 15, target
     ))
     this.enemies.push(createEnemy(
-      20, 55, 15, 15
+      20, 55, 15, 15, target
     ))
     this.enemies.push(createEnemy(
-      20, 60, 15, 15
+      20, 60, 15, 15, target
     ))
 
     // for (let i = 0; i < numberOfEnemies; i++) {
@@ -39,7 +126,7 @@ class GameState {
     //   const random = Math.floor(Math.random() * 5) + 3 
     //   const width = random
     //   const height = random + 1
-    //   this.enemies.push(createEnemy(x, y, width, height))
+    //   this.enemies.push(createEnemy(x, y, width, height, target))
     // }
     
   }
@@ -88,3 +175,4 @@ class GameState {
   }
 
 }
+

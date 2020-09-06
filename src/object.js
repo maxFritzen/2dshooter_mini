@@ -33,7 +33,7 @@ class Obj extends kontra.Sprite.class {
       this.color = this.originalColor
     }, 100)
     if (this.hp <= 0) {
-      this.ttl = 0;
+      this.die()
     }
   }
   update () {

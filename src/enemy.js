@@ -10,8 +10,11 @@ class Enemy extends Obj {
     this.hp = this.width + this.height
   }
 
-  move() {
+  die () {
+    this.ttl = 0
+  }
 
+  move() {
     let newX = this.x
     let newY = this.y
     

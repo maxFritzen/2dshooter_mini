@@ -2,7 +2,8 @@
 kontra.init();
 kontra.initKeys();
 
-const newPlayer = new Player(
+
+const createNewPlayer = () => new Player(
   150,
   50,
   'blue',
@@ -13,7 +14,7 @@ const newPlayer = new Player(
   10
 )
 
-const createEnemy = (x, y, width, height) => new Enemy(
+const createEnemy = (x, y, width, height, target) => new Enemy(
   x,
   y,
   'white',
@@ -22,36 +23,27 @@ const createEnemy = (x, y, width, height) => new Enemy(
   height,
   Math.floor(Math.random() * 10) + 5,
   10,
-  newPlayer,
+  target,
   Math.random()
 )
 
+const getText = (text) => new kontra.Text({
+  text,
+  font: '14px Helvetica',
+  color: 'black',
+  x: 100,
+  y: 20,
+  anchor: {x: 0.5, y: 0.5},
+  textAlign: 'center'
+})
+
 const gameState = new GameState()
-gameState.incEnemies()
+gameState.startGame()
 
-let loop = kontra.GameLoop({
-  update: function() {
-    gameState.getPlayer().update();
-    gameState.getEnemies().map(sprite => sprite.update())
-    gameState.getBlood().map(sprite => sprite.update())
-    gameState.getProjectiles().map(sprite => sprite.update())
-    gameState.getFireEffects().map(sprite => sprite.update())
-    gameState.removeEnemies()
-    gameState.removeProjectiles()
-    gameState.removeFireEffects()
-    if (gameState.getEnemies().length <= 0) {
-      gameState.incLevel()
-      gameState.incEnemies()
-    }
+function play () {
+  gameState.startGame()
+}
 
-  },
-  render: function() {
-    gameState.getPlayer().render();
-    gameState.getEnemies().map(sprite => sprite.render())
-    gameState.getProjectiles().map(sprite => sprite.render())
-    gameState.getBlood().map(sprite => sprite.render())
-    gameState.getFireEffects().map(sprite => sprite.render())
-  }
-});
-
-loop.start()
+function stop () {
+  gameState.stopGame()
+}

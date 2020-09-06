@@ -5,6 +5,9 @@ TODO:
 * lose
 * win
 
+*Stop game
+*Start game
+
 
 * should enemy drop something? Not found - theme.
 * Perhaps 404 levels and they sometimes drop medpack?
