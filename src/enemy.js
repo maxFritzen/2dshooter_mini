@@ -1,7 +1,7 @@
 
 class Enemy extends Obj {
-  constructor (x, y, color, width, height, speed, hp, target, id) {
-    super(x, y, color, width, height, speed, hp) 
+  constructor (x, y, color, damageColor, width, height, speed, hp, target, id) {
+    super(x, y, color, damageColor, width, height, speed, hp) 
     this.target = target
     this.id = id
     this.direction = ''
@@ -11,6 +11,7 @@ class Enemy extends Obj {
   }
 
   move() {
+
     let newX = this.x
     let newY = this.y
     

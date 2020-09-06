@@ -1,11 +1,11 @@
 
 class Obj extends kontra.Sprite.class {
-  constructor (x, y, color, width, height, speed, hp) {
+  constructor (x, y, color, damageColor, width, height, speed, hp) {
     super();
     this.x = x
     this.y = y
     this.color = color
-    this.damageColor = 'orange'
+    this.damageColor = damageColor
     this.originalColor = color
     this.width = width
     this.height = height
@@ -23,8 +23,9 @@ class Obj extends kontra.Sprite.class {
       this.y = this.context.canvas.height - this.height
     }
   }
-  hit(dmg) {
+  hit (dmg) {
     // Not sure about this
+    console.log(this.hp, dmg)
     this.hp -= dmg
     this.color = this.damageColor
     setTimeout(() => {

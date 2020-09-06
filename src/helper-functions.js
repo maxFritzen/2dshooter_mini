@@ -42,7 +42,7 @@ function createProjectile (x, y, angle) {
             gameState.incBlood(this.x, this.y, angle)
             this.height = 5
             this.width = 8
-            // enemy.hit(5);
+            enemy.hit(1);
             this.ttl = 0;
             break
         }

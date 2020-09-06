@@ -22,12 +22,13 @@ const getRotation = (direction) => {
 }
 
 class Player extends Obj {
-  constructor (x, y, color, width, height, speed, hp) {
-    super(x, y, color, width, height, speed, hp)
+  constructor (x, y, color, damageColor, width, height, speed, hp) {
+    super(x, y, color, damageColor, width, height, speed, hp)
     this.shootingSpeedInterval = null
     this.rotateSpeedInterval = null
     this.direction = possibleDirections[1]
     this.bullets = 20
+    this.collisionInterval = null
   }
   rotate(direction) {
     if (this.rotateSpeedInterval) return
@@ -80,6 +81,8 @@ class Player extends Obj {
   }
 
   move() {
+    if (this.ttl <= 0) return
+
     if (keyPressed('left')) {
       this.rotate('left')      
     } else if (keyPressed('right')) {
@@ -95,6 +98,25 @@ class Player extends Obj {
     if (keyPressed('space')) {
       this.shoot()
     }
+
+    // collision with enemy
+    this.collisionCheck()
   } 
+  collisionCheck () {
+    const enemies = gameState.getEnemies()
+    if (this.collisionInterval) return
+    enemies.forEach((enemy) => {
+      if (collision(this, enemy)) {
+        console.log('collisison with enemy')
+        this.context.filter = `blur(0.8px)`
+        this.hit(5)
+        setTimeout(() => this.context.filter = 'none', 200)
+        this.collisionInterval = setTimeout(() => {
+          this.collisionInterval = null
+          this.context.filter = 'none'
+        }, 1000)
+      }
+    })
+  }
 
 }
