@@ -43,46 +43,26 @@ class Enemy extends Obj {
         const newValues = {
           height: this.height,
           width: this.width,
-          x: this.x,
-          y: this.y
-          // x: newX,
-          // y: newY
+          x: newX,
+          y: newY
         }
 
         if (enemies[i].id !== this.id && collision(newValues, enemies[i])) {
           const collidingEnemyX = enemies[i].x
           const collidingEnemyY = enemies[i].y
-          console.log('colliding enemies')
-          
-          switch (direction) {
-            case 'right': {
-              if (newX <= collidingEnemyX) {
-                newX -= 2
-              }
-              break; 
+          // if dir === right OR left => go up or down
+          if (direction === 'left' && direction === 'right') {
+            if (newY <= collidingEnemyY) {
+              newY -= 2
+            } else if (newY >= collidingEnemyY) {
+              newY+= 2
             }
-            case 'left': {
-              if (newX >= collidingEnemyX) {
-                newX += 2
-              }
-              break;
-            }
-            case 'up': {
-             
-              if (newY <= collidingEnemyY) {
-                newY += 2
-              } 
-              break;
-            }
-            case 'down': {
-              if (newY >= collidingEnemyY) {
-                newY -= 2
-              } 
-              break;
-            }
-            default: {
-              break;
-            }
+          } else {
+            if (newX <= collidingEnemyX) {
+              newX -= 2
+            } else  if (newX >= collidingEnemyX) {
+              newX += 2
+            } 
           }
           
         } 
