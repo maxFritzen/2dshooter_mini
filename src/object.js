@@ -25,15 +25,14 @@ class Obj extends kontra.Sprite.class {
   }
   hit (dmg) {
     // Not sure about this
-    console.log(this.hp, dmg)
     this.hp -= dmg
     this.color = this.damageColor
     setTimeout(() => {
-      console.log('timeout')
       this.color = this.originalColor
     }, 100)
     if (this.hp <= 0) {
       this.die()
+      gameState.incBlood(this.x, this.y, 0, this.width, this.height)
     }
   }
   update () {
