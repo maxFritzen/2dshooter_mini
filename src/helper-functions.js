@@ -1,32 +1,23 @@
 const { Sprite } = kontra
 const collision = (objA, objB) => {
   // remember anchor x and y on enemy is 0.5
-
-  // add check for height + width on both objects.
-  const top = objB.y - objB.height / 2
-  const bot = objB.y + objB.height / 2
-  const left = objB.x - objB.width / 2
-  const right = objB.x + objB.width / 2
-
   const objAtop = objA.y - objA.height / 2
   const objAbot = objA.y + objA.height / 2
   const objAleft = objA.x - objA.width / 2
   const objAright = objA.x + objA.width / 2
-  console.log('b: ', { top, bot, left, right })
-  console.log('a: ', { objAtop, objAbot, objAleft, objAright })
 
-  const collisionY = objAtop <= bot
-    && objAbot >= top
-  const collisionX = objAleft <= right
-  && objAright >= left
+  const objBtop = objB.y - objB.height / 2
+  const objBbot = objB.y + objB.height / 2
+  const objBleft = objB.x - objB.width / 2
+  const objBright = objB.x + objB.width / 2
+
+
+  const collisionY = objAtop <= objBbot
+    && objAbot >= objBtop
+  const collisionX = objAleft <= objBright
+    && objAright >= objBleft
 
   return collisionY && collisionX
-  // const collisionY = objA.y > top
-  //   && objA.y < bot
-  // const collisionX = objA.x > left
-  // && objA.x < right
-
-  // return collisionY && collisionX
 }
 
 
