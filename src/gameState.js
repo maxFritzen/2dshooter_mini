@@ -12,14 +12,40 @@ class GameState {
     this.hasStartedGame = false
     this.loop = null
     this.text = getText()
+    this.timer = null
+    this.context = document.getElementsByClassName('gameCanvas')[0].getContext('2d')
   }
 
   setHasStartedGame () {
     this.hasStartedGame = true
+    this.timer = this.setTimer()
   }
 
   setGameIsRunning (bool) {
     this.gameIsRunning = bool
+    this.timer = this.setTimer()
+  }
+
+  setTimer () {
+    console.log('setTimer')
+    if (this.timer) {
+      this.timer = clearInterval(this.timer)
+    }
+    const originalTime = 5
+    let time = originalTime
+    this.timer = setInterval(() => {
+      time -= 1
+      if (time <= 0) {
+        time = originalTime
+        this.level += 1
+        this.incEnemies()
+      }
+      console.log(time)
+    }, 1000)
+  }
+
+  getTimer () {
+    return this.timer
   }
 
   startGame () {
@@ -29,13 +55,11 @@ class GameState {
     this.fireEffects = [];
     this.blood = []
     this.player = createNewPlayer()
+    
     this.incEnemies()
     if (this.loop) {
       this.loop.stop()
     }
-    
-  
-    
 
     this.loop = kontra.GameLoop({
       update: function() {
@@ -74,13 +98,13 @@ class GameState {
           getText('Start game? \n Press y').render()
           return
         }
+        gameState.getBlood().map(sprite => sprite.render())
         gameState.getEnemies().map(sprite => sprite.render())
         gameState.getProjectiles().map(sprite => sprite.render())
-        gameState.getBlood().map(sprite => sprite.render())
         gameState.getFireEffects().map(sprite => sprite.render())
         gameState.getPlayer().render();
         if (!gameState.gameIsRunning) {
-          getText(`You made it to level ${gameState.getLevel()}! \nPlay again?  Press y`).render()
+          getText(`You made it to wave ${gameState.getLevel()}! \nPlay again?  Press y`).render()
         }
       }
     })
@@ -96,8 +120,6 @@ class GameState {
 
   incProjectiles (x, y, angle) {
     const randAngle = angle + (Math.random() / 30 - Math.random() / 30)
-    console.log('angle: ', angle)
-    console.log('Randangle: ', randAngle)
     const newProjectile = createProjectile(x, y, randAngle)
     const newFireEffect = createFireEffect(x, y, angle)
     this.projectiles.push(newProjectile)
@@ -112,6 +134,35 @@ class GameState {
   incEnemies () {
     const stages = [ 100, 200, 302, 403 ]
     const numberOfEnemies = stages[this.level]
+    const directions = ['top', 'right', 'bot', 'left']
+    const direction = directions[Math.floor(Math.random() * 4)]
+    console.log('incenemies direction:  ', direction)
+    console.log('this:', this)
+    const getX = () => {
+      let x
+      if (direction === 'top' || direction === 'bot') {
+        x = Math.random() * this.context.canvas.width
+      } else if (direction === 'left') {
+        x = Math.random() * -10
+      } else if (direction === 'right') {
+        x = this.context.canvas.width - (Math.random() * 10)
+      }
+      return x
+    }
+
+    const getY = () => {
+      let y
+      if (direction === 'left' || direction === 'right') {
+        y = Math.random() * this.context.canvas.height
+      } else if (direction === 'top') {
+        y = Math.random() * -10
+      } else if (direction === 'bot') {
+        y = this.context.canvas.height - (Math.random() * 10)
+      }
+      return y
+    }
+
+
     const target = this.getPlayer()
     // this.enemies.push(createEnemy(
     //   20, 50, 15, 15, target
@@ -124,8 +175,8 @@ class GameState {
     // ))
 
     for (let i = 0; i < numberOfEnemies; i++) {
-      const x = Math.floor(Math.random() * 75) - 65
-      const y = Math.floor(Math.random() * 400)
+      const x = getX()
+      const y = getY()
       const random = Math.floor(Math.random() * 5) + 3 
       const width = random
       const height = random + 1
@@ -134,11 +185,11 @@ class GameState {
     
   }
 
-  incBlood (x, y, angle) {
+  incBlood (x, y, angle, width, height) {
     const newX = x +  Math.floor(Math.random() * 3) -1
     const newY = y +  Math.floor(Math.random() * 3) -1
     // this.blood.push(createBlood(newX, newY, angle))
-    this.blood.push(createBlood(x, y, angle))
+    this.blood.push(createBlood(x, y, angle, width, height))
   }
 
   getBlood () {
