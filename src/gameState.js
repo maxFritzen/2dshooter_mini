@@ -18,16 +18,15 @@ class GameState {
 
   setHasStartedGame () {
     this.hasStartedGame = true
-    this.timer = this.setTimer()
+    this.setTimer()
   }
 
   setGameIsRunning (bool) {
     this.gameIsRunning = bool
-    this.timer = this.setTimer()
+    this.setTimer()
   }
 
   setTimer () {
-    console.log('setTimer')
     if (this.timer) {
       this.timer = clearInterval(this.timer)
     }
@@ -114,7 +113,8 @@ class GameState {
 
   stopGame () {
     this.gameIsRunning = false
-    console.log('stopgame')
+
+    clearInterval(this.getTimer())
     
   }
 
@@ -133,11 +133,11 @@ class GameState {
 
   incEnemies () {
     const stages = [ 100, 200, 302, 403 ]
-    const numberOfEnemies = stages[this.level]
+    // const numberOfEnemies = stages[this.level]
+    const numberOfEnemies = 404
     const directions = ['top', 'right', 'bot', 'left']
     const direction = directions[Math.floor(Math.random() * 4)]
     console.log('incenemies direction:  ', direction)
-    console.log('this:', this)
     const getX = () => {
       let x
       if (direction === 'top' || direction === 'bot') {
@@ -182,6 +182,8 @@ class GameState {
       const height = random + 1
       this.enemies.push(createEnemy(x, y, width, height, target))
     }
+
+    console.log('enemies: ', this.enemies.length)
     
   }
 
