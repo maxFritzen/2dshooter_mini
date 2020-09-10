@@ -12,15 +12,23 @@ class Enemy extends Obj {
 
   die () {
     this.drop ()
+    gameState.incBlood(this.x, this.y, 0, this.width + 2, this.height + 2)
     this.ttl = 0
   }
 
   drop () {
-    if (gameState.getPlayer().level >= 5) return
-    const rand = Math.floor(Math.random() * 20)
-    if (rand === 1) {
-      console.log('drop pickup')
-      gameState.incPickup(this.x, this.y)
+    // maybe one drop can kill all enemies.
+    if (gameState.getPlayer().level >= 5) {
+      const rand = Math.floor(Math.random() * 20)
+      if (rand === 1) {
+        console.log('drop pickup')
+        gameState.incPickup(this.x, this.y)
+      }
+    } else {
+      const rand = Math.floor(Math.random() * 100)
+      if (rand === 1) {
+        gameState.incPickup(this.x, this.y)
+      }
     }
   }
 

@@ -32,7 +32,6 @@ class Obj extends kontra.Sprite.class {
     }, 100)
     if (this.hp <= 0) {
       this.die()
-      gameState.incBlood(this.x, this.y, 0, this.width, this.height)
     }
   }
   update () {

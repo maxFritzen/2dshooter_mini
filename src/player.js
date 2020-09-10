@@ -14,7 +14,7 @@ class Player extends Obj {
   }
 
   incLevel () {
-    if (this.collisionPickupInterval || this.level >= 5) return
+    if (this.collisionPickupInterval) return
     this.collisionPickupInterval = setTimeout(() => {
       this.collisionPickupInterval = null
     }, 200)
@@ -75,8 +75,19 @@ class Player extends Obj {
     const pickups = gameState.getPickups()
     pickups.forEach((p) => {
       if (collision(this, p)) {
+        gameState.getEnemies().forEach((x) => {
+          x.ttl = 0
+        })
         p.ttl = 0
-        this.incLevel()   
+        if (this.level >= 5) {
+          this.incLevel()
+        } else {
+          // kill all enemies
+          gameState.getEnemies().forEach((x) => {
+            x.die()
+          })
+
+        }
       }
     })
   }
