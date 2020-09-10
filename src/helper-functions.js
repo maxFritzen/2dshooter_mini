@@ -98,13 +98,7 @@ function createPickup (x, y, angle, width = 35, height = 35) {
     height,
     rotation: angle,
     color: 'purple',
-    ttl: 300, 
-    render () {
-      this.context.fillStyle = this.color
-      this.context.beginPath()
-      this.context.arc(0, 0, width / 2, 0, 2 * Math.PI)
-      this.context.fill()
-    }
+    ttl: 300
   })
   return pickup
 }
