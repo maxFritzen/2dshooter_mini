@@ -9,18 +9,42 @@
       background: black;
     }
 
-    .gameCanvas {
+    .wrapper {
+      position: relative;
+      margin: 0 auto;
       width: 800px;
       height: 600px;
-      border: 5px solid white;
-      margin: 0 auto;
+    }
+
+
+    .gameCanvas {
+      position: absolute;
+      top: 50px;
+      
+
+      width: 100%;
+      height: 100%;
+
       display: block;
-      background: #4b4949;
+
+      background-image: linear-gradient(to bottom, transparent 50%, #f7f7f7 50%), linear-gradient(to right, #f7f7f7 50%, #a2a1a1 50%);
+      background-size: 10px 10px, 10px 10px;
+    }
+
+    .layerEffect {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50px;
+      box-shadow: inset 0 0 30px 50px black;
+
     }
   </style>
   <body>
-    <h1>Hejsan</h1>
+  <div class='wrapper'>
     <canvas class='gameCanvas'></canvas>
+    <div class='layerEffect'></div>
+  </div>
   </body>
   <script src="https://cdn.jsdelivr.net/npm/kontra@7.1.2/kontra.min.js"></script>
   <script src='./src/helper-functions.js'></script>
