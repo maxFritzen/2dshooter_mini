@@ -16,6 +16,8 @@ class Enemy extends Obj {
   }
 
   drop () {
+    if (gameState.getPlayer().level >= 5) return
+    
     const rand = Math.floor(Math.random() * 20)
     if (rand === 1) {
       console.log('drop pickup')
