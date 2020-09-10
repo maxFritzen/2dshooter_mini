@@ -14,34 +14,28 @@ class Player extends Obj {
   }
 
   incLevel () {
-    if (this.collisionPickupInterval) return
+    if (this.collisionPickupInterval || this.level >= 5) return
     this.collisionPickupInterval = setTimeout(() => {
       this.collisionPickupInterval = null
-    }, 1200)
-    if (this.level < 5) {
-      this.level++
-    }
-    
+    }, 200)
+    this.level++
   }
 
   shoot () {
     if (this.bullets <= 0) {
       setTimeout(() => {
         this.bullets = ammo * this.level / 2
-      }, 500)
+      }, 404)
     }
-    const x = [1, -1, 2, -2, 3, -3]
+
     if (this.shootingSpeedInterval) return
       if (this.bullets > 0) {
-        for (let i = 0; i < this.bullets; i++) {
-          gameState.incProjectiles(this.x, this.y, this.rotation)
-        }
-        
+        gameState.incProjectiles(this.x, this.y, this.rotation)
         
         this.bullets -= 1
         this.shootingSpeedInterval = setTimeout(() => {
           this.shootingSpeedInterval = null
-        }, 500 / this.level)
+        }, 404 / this.level)
       }
   }
 
@@ -49,7 +43,6 @@ class Player extends Obj {
     if (this.ttl <= 0) return
 
     if (keyPressed('left')) {
-      // this.rotate('left')
       this.rotation += degToRad(-4)
       const cos = Math.cos(this.rotation)
       const sin = Math.sin(this.rotation)
@@ -61,7 +54,6 @@ class Player extends Obj {
       const sin = Math.sin(this.rotation)
       this.dx = cos * 0.5
       this.dy = sin * 0.5
-      // this.rotate('right')
     }
       
     if (keyPressed('up')) {
@@ -74,10 +66,10 @@ class Player extends Obj {
       this.shoot()
     }
 
-    // collision with enemy
     this.collisionCheck()
     this.collisionPickup()
   } 
+
   collisionPickup () {
     
     const pickups = gameState.getPickups()

@@ -11,8 +11,6 @@ class Enemy extends Obj {
   }
 
   die () {
-    // drop incLevelBox
-    // The higher level, the more shots are fired
     this.drop ()
     this.ttl = 0
   }
@@ -82,7 +80,6 @@ class Enemy extends Obj {
 
       this.x = newX
       this.y = newY
-      this.rotation = Math.atan2(this.dy,this.dx);
       
       this.limit = this.originalSpeed + this.hp
     } 
