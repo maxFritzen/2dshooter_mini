@@ -17,8 +17,8 @@ const createNewPlayer = () => new Player(
 const createEnemy = (x, y, width, height, target) => new Enemy(
   x,
   y,
-  'white',
   'orange',
+  'green',
   width,
   height,
   Math.floor(Math.random() * 10) + 5,
@@ -32,7 +32,7 @@ const getText = (text) => new kontra.Text({
   font: '14px Helvetica',
   color: 'black',
   x: 100,
-  y: 20,
+  y: 30,
   anchor: {x: 0.5, y: 0.5},
   textAlign: 'center'
 })

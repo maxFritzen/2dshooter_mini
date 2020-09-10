@@ -97,13 +97,15 @@ class GameState {
           getText('Start game? \n Press y').render()
           return
         }
-        getText('WAVE: ' + gameState.level).render()
         gameState.getBlood().map(sprite => sprite.render())
         gameState.getPickups().map(sprite => sprite.render())
         gameState.getEnemies().map(sprite => sprite.render())
         gameState.getProjectiles().map(sprite => sprite.render())
         gameState.getFireEffects().map(sprite => sprite.render())
         gameState.getPlayer().render();
+        if (gameState.hasStartedGame && gameState.gameIsRunning) {
+          getText('WAVE: ' + gameState.level).render()
+        }
         if (!gameState.gameIsRunning) {
           getText(`You made it to wave ${gameState.getLevel()}! \nPlay again?  Press y`).render()
         }

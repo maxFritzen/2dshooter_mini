@@ -89,7 +89,7 @@ function createBlood (x, y, angle, width = 2, height = 2) {
   return blood
 }
 
-function createPickup (x, y, angle, width = 35, height = 35) {
+function createPickup (x, y, angle, width = 10, height = 10) {
   const pickup = Sprite({
     id: x + y + angle, 
     x,
@@ -98,7 +98,8 @@ function createPickup (x, y, angle, width = 35, height = 35) {
     height,
     rotation: angle,
     color: 'purple',
-    ttl: 300
+    ttl: 300,
+    anchor: { x: 0.5, y: 0.5 }
   })
   return pickup
 }
