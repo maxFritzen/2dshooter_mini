@@ -6,6 +6,7 @@ class GameState {
     this.enemies = [];
     this.projectiles = [];
     this.fireEffects = [];
+    this.pickups = []
     this.player = null
     this.blood = []
     this.gameIsRunning = true
@@ -39,7 +40,6 @@ class GameState {
         this.level += 1
         this.incEnemies()
       }
-      console.log(time)
     }, 1000)
   }
 
@@ -64,7 +64,6 @@ class GameState {
       update: function() {
         if (!gameState.hasStartedGame) {
           if (kontra.keyPressed('y')) {
-            console.log('pressed y')
             gameState.setHasStartedGame()
           }
           return
@@ -78,6 +77,7 @@ class GameState {
         gameState.removeEnemies()
         gameState.removeProjectiles()
         gameState.removeFireEffects()
+        gameState.removePickups()
         if (gameState.getEnemies().length <= 0) {
           gameState.incLevel()
           gameState.incEnemies()
@@ -98,6 +98,7 @@ class GameState {
           return
         }
         gameState.getBlood().map(sprite => sprite.render())
+        gameState.getPickups().map(sprite => sprite.render())
         gameState.getEnemies().map(sprite => sprite.render())
         gameState.getProjectiles().map(sprite => sprite.render())
         gameState.getFireEffects().map(sprite => sprite.render())
@@ -121,9 +122,21 @@ class GameState {
   incProjectiles (x, y, angle) {
     const randAngle = angle + (Math.random() / 30 - Math.random() / 30)
     const newProjectile = createProjectile(x, y, randAngle)
-    const newFireEffect = createFireEffect(x, y, angle)
+    const newFireEffect = createFireEffect(x, y, angle) 
     this.projectiles.push(newProjectile)
     this.fireEffects.push(newFireEffect)
+  }
+
+  incPickup (x, y) {
+    this.pickups.push(createPickup(x, y))
+  }
+
+  getPickups () {
+    return this.pickups
+  }
+
+  removePickups () {
+    this.pickups = this.pickups.filter((s) => s.isAlive())
   }
   
 
@@ -132,12 +145,9 @@ class GameState {
   }
 
   incEnemies () {
-    const stages = [ 100, 200, 302, 403 ]
-    // const numberOfEnemies = stages[this.level]
-    const numberOfEnemies = 404
+    const numberOfEnemies = 404 / 100 * this.level
     const directions = ['top', 'right', 'bot', 'left']
     const direction = directions[Math.floor(Math.random() * 4)]
-    console.log('incenemies direction:  ', direction)
     const getX = () => {
       let x
       if (direction === 'top' || direction === 'bot') {
@@ -164,15 +174,6 @@ class GameState {
 
 
     const target = this.getPlayer()
-    // this.enemies.push(createEnemy(
-    //   20, 50, 15, 15, target
-    // ))
-    // this.enemies.push(createEnemy(
-    //   20, 55, 15, 15, target
-    // ))
-    // this.enemies.push(createEnemy(
-    //   20, 60, 15, 15, target
-    // ))
 
     for (let i = 0; i < numberOfEnemies; i++) {
       const x = getX()
@@ -183,7 +184,6 @@ class GameState {
       this.enemies.push(createEnemy(x, y, width, height, target))
     }
 
-    console.log('enemies: ', this.enemies.length)
     
   }
 

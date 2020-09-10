@@ -11,7 +11,14 @@ class Enemy extends Obj {
   }
 
   die () {
+    // drop incLevelBox
+    // The higher level, the more shots are fired
+    this.drop ()
     this.ttl = 0
+  }
+
+  drop () {
+    gameState.incPickup(this.x, this.y)
   }
 
   move() {

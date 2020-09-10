@@ -11,7 +11,7 @@ const createNewPlayer = () => new Player(
   3,
   5,
   2,
-  10
+  100
 )
 
 const createEnemy = (x, y, width, height, target) => new Enemy(

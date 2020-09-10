@@ -1,30 +1,48 @@
 
 const { keyPressed, degToRad } = kontra
-
+let ammo = 20
 class Player extends Obj {
   constructor (x, y, color, damageColor, width, height, speed, hp) {
     super(x, y, color, damageColor, width, height, speed, hp)
     this.shootingSpeedInterval = null
     this.rotateSpeedInterval = null
-    this.bullets = 20
+    this.pickupInterval = null
+    this.bullets = ammo
     this.collisionInterval = null
+    this.collisionPickupInterval = null
+    this.level = 1
+  }
+
+  incLevel () {
+    if (this.collisionPickupInterval) return
+    this.collisionPickupInterval = setTimeout(() => {
+      this.collisionPickupInterval = null
+    }, 1200)
+    if (this.level < 5) {
+      this.level++
+    }
+    
   }
 
   shoot () {
     if (this.bullets <= 0) {
       setTimeout(() => {
-        this.bullets = 20
-      }, 1000)
+        this.bullets = ammo * this.level / 2
+      }, 500)
     }
+    const x = [1, -1, 2, -2, 3, -3]
     if (this.shootingSpeedInterval) return
       if (this.bullets > 0) {
-        gameState.incProjectiles(this.x, this.y, this.rotation)
+        for (let i = 0; i < this.bullets; i++) {
+          gameState.incProjectiles(this.x, this.y, this.rotation)
+        }
+        
+        
         this.bullets -= 1
         this.shootingSpeedInterval = setTimeout(() => {
           this.shootingSpeedInterval = null
-        }, 100)
+        }, 500 / this.level)
       }
-      
   }
 
   move() {
@@ -58,17 +76,24 @@ class Player extends Obj {
 
     // collision with enemy
     this.collisionCheck()
+    this.collisionPickup()
   } 
-
+  collisionPickup () {
+    
+    const pickups = gameState.getPickups()
+    pickups.forEach((p) => {
+      if (collision(this, p)) {
+        p.ttl = 0
+        this.incLevel()   
+      }
+    })
+  }
   collisionCheck () {
     const enemies = gameState.getEnemies()
     if (this.collisionInterval) return
     enemies.forEach((enemy) => {
       if (collision(this, enemy)) {
-        console.log('collisison with enemy')
-        this.context.filter = `blur(0.8px)`
         this.hit(10)
-        setTimeout(() => this.context.filter = 'none', 200)
         this.collisionInterval = setTimeout(() => {
           this.collisionInterval = null
           this.context.filter = 'none'
@@ -82,5 +107,4 @@ class Player extends Obj {
     this.color = 'purple'
     stop()
   }
-
 }

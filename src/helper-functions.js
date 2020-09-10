@@ -42,7 +42,7 @@ function createProjectile (x, y, angle) {
             gameState.incBlood(this.x, this.y, angle)
             this.height = 5
             this.width = 8
-            enemy.hit(3);
+            enemy.hit(20);
             this.ttl = 0;
             break
         }
@@ -88,3 +88,24 @@ function createBlood (x, y, angle, width = 2, height = 2) {
   })
   return blood
 }
+
+function createPickup (x, y, angle, width = 5, height = 5) {
+  const pickup = Sprite({
+    id: x + y + angle, 
+    x,
+    y,
+    width,
+    height,
+    rotation: angle,
+    color: 'purple',
+    ttl: 300, 
+    render () {
+      this.context.fillStyle = this.color
+      this.context.beginPath()
+      this.context.arc(0, 0, width / 2, 0, 2 * Math.PI)
+      this.context.fill()
+    }
+  })
+  return pickup
+}
+
