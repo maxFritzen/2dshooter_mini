@@ -66,23 +66,19 @@ class Player extends Obj {
       this.shoot()
     }
 
-    this.collisionCheck()
-    this.collisionPickup()
+    this.collisionCheckEnemy()
+    this.collisionCheckPickup()
   } 
 
-  collisionPickup () {
-    
+  collisionCheckPickup () {
+    // Either level up or kill all enemies.
     const pickups = gameState.getPickups()
     pickups.forEach((p) => {
       if (collision(this, p)) {
-        gameState.getEnemies().forEach((x) => {
-          x.ttl = 0
-        })
         p.ttl = 0
-        if (this.level >= 5) {
+        if (this.level < 5) {
           this.incLevel()
         } else {
-          // kill all enemies
           gameState.getEnemies().forEach((x) => {
             x.die()
           })
@@ -91,7 +87,8 @@ class Player extends Obj {
       }
     })
   }
-  collisionCheck () {
+  collisionCheckEnemy () {
+
     const enemies = gameState.getEnemies()
     if (this.collisionInterval) return
     enemies.forEach((enemy) => {
@@ -99,7 +96,6 @@ class Player extends Obj {
         this.hit(10)
         this.collisionInterval = setTimeout(() => {
           this.collisionInterval = null
-          this.context.filter = 'none'
         }, 1000)
       }
     })
@@ -107,7 +103,7 @@ class Player extends Obj {
 
   die () {
     this.ttl = 0
-    this.color = 'purple'
-    stop()
+    gameState.incBlood(this.x, this.y, 0, 20, 20)
+    gameState.stopGame()
   }
 }

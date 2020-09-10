@@ -40,10 +40,3 @@ const getText = (text) => new kontra.Text({
 const gameState = new GameState()
 gameState.startGame()
 
-function play () {
-  gameState.startGame()
-}
-
-function stop () {
-  gameState.stopGame()
-}

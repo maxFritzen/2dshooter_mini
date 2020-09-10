@@ -17,11 +17,11 @@ class Enemy extends Obj {
   }
 
   drop () {
-    // maybe one drop can kill all enemies.
+    // Pickup will increase playerLevel until 5, then kill all enemies
+    // so decrease chance of drop
     if (gameState.getPlayer().level >= 5) {
       const rand = Math.floor(Math.random() * 20)
       if (rand === 1) {
-        console.log('drop pickup')
         gameState.incPickup(this.x, this.y)
       }
     } else {
@@ -59,7 +59,7 @@ class Enemy extends Obj {
       }
       this.direction = direction
 
-      // check collision
+      // check collision with other enemies
       const enemies = gameState.getEnemies()
       for (let i = 0; i <= enemies.length - 1; i++) {
         const newValues = {

@@ -84,7 +84,6 @@ class GameState {
         }
         if (!gameState.gameIsRunning) {
           if (kontra.keyPressed('y')) {
-            console.log('dead press y')
             gameState.setGameIsRunning(true)
             gameState.startGame()
           }
