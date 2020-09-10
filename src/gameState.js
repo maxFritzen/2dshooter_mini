@@ -97,6 +97,7 @@ class GameState {
           getText('Start game? \n Press y').render()
           return
         }
+        getText('WAVE: ' + gameState.level).render()
         gameState.getBlood().map(sprite => sprite.render())
         gameState.getPickups().map(sprite => sprite.render())
         gameState.getEnemies().map(sprite => sprite.render())
