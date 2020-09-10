@@ -16,7 +16,11 @@ class Enemy extends Obj {
   }
 
   drop () {
-    gameState.incPickup(this.x, this.y)
+    const rand = Math.floor(Math.random() * 20)
+    if (rand === 1) {
+      console.log('drop pickup')
+      gameState.incPickup(this.x, this.y)
+    }
   }
 
   move() {
