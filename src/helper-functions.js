@@ -1,5 +1,6 @@
-const { Sprite } = kontra
-const collision = (objA, objB) => {
+import { Sprite } from './kontra.js'
+import { gameState } from './index.js'
+export const collision = (objA, objB) => {
   // remember anchor x and y on enemy is 0.5
   const objAtop = objA.y - objA.height / 2
   const objAbot = objA.y + objA.height / 2
@@ -21,7 +22,7 @@ const collision = (objA, objB) => {
 }
 
 
-function createProjectile (x, y, angle) {
+export function createProjectile (x, y, angle) {
   const projectile = Sprite({
     id: x + y + angle, 
     x: x,
@@ -54,7 +55,7 @@ function createProjectile (x, y, angle) {
   return projectile
 }
 
-function createFireEffect (x, y, angle) {
+export function createFireEffect (x, y, angle) {
   const projectile = Sprite({
     id: x + y + angle, 
     x: x,
@@ -69,7 +70,7 @@ function createFireEffect (x, y, angle) {
   return projectile
 }
 
-function createBlood (x, y, angle, width = 2, height = 2) {
+export function createBlood (x, y, angle, width = 2, height = 2) {
   const blood = Sprite({
     id: x + y + angle, 
     x,
@@ -89,7 +90,7 @@ function createBlood (x, y, angle, width = 2, height = 2) {
   return blood
 }
 
-function createPickup (x, y, angle, width = 10, height = 10) {
+export function createPickup (x, y, angle, width = 10, height = 10) {
   const pickup = Sprite({
     id: x + y + angle, 
     x,

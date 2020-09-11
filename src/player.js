@@ -1,7 +1,10 @@
+import { keyPressed, degToRad } from './kontra.js'
+import { collision } from './helper-functions.js'
+import { gameState } from './index.js'
+import { Obj } from './object.js'
 
-const { keyPressed, degToRad } = kontra
 let ammo = 20
-class Player extends Obj {
+export class Player extends Obj {
   constructor (x, y, color, damageColor, width, height, speed, hp) {
     super(x, y, color, damageColor, width, height, speed, hp)
     this.shootingSpeedInterval = null

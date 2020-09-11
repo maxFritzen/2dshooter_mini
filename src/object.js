@@ -1,5 +1,6 @@
+import { Sprite } from './kontra.js'
 
-class Obj extends kontra.Sprite.class {
+export class Obj extends Sprite.class {
   constructor (x, y, color, damageColor, width, height, speed, hp) {
     super();
     this.x = x
@@ -24,7 +25,6 @@ class Obj extends kontra.Sprite.class {
     }
   }
   hit (dmg) {
-    // Not sure about this
     this.hp -= dmg
     this.color = this.damageColor
     setTimeout(() => {

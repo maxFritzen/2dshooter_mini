@@ -29,9 +29,6 @@
 
       display: block;
 
-      background-image: linear-gradient(to bottom, transparent 50%, #f7f7f7 50%), linear-gradient(to right, #f7f7f7 50%, #a2a1a1 50%);
-      background-size: 10px 10px, 10px 10px;
-
       background-image: linear-gradient(to bottom, #f5f5f5 50%, #000000 50%), linear-gradient(to right, #cbc5c5 50%, #f4f3f3 50%);
       background-size: 4px 4px, 4px 4px;
 
@@ -64,14 +61,5 @@
       <p>Controls: arrows and space.</p>
   </div>
   </body>
-  <script src="./src/kontra.js"></script>
-  <script src='./src/helper-functions.js'></script>
-  <script src='./src/gameState.js'></script>
-  <script src='./src/object.js'></script>
-  <script src='./src/enemy.js'></script>
-  <script src='./src/player.js'></script>
-  <script src='./index.js'></script>
-  <script>
-    kontra.init()
-  </script>
+  <script type='module' src='./src/index.js'></script>
 </html>

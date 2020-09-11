@@ -1,5 +1,8 @@
+import { gameState } from './index.js'
+import { Obj } from './object.js'
+import { collision } from './helper-functions.js'
 
-class Enemy extends Obj {
+export class Enemy extends Obj {
   constructor (x, y, color, damageColor, width, height, speed, hp, target, id) {
     super(x, y, color, damageColor, width, height, speed, hp) 
     this.target = target

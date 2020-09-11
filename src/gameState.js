@@ -1,6 +1,8 @@
+import { GameLoop, keyPressed } from './kontra.js'
+import { createBlood, createFireEffect, createProjectile, createPickup } from './helper-functions.js'
+import { createNewPlayer, createEnemy, getText, gameState } from './index.js'
 
-
-class GameState {
+export class GameState {
   constructor () {
     this.level = 1;
     this.enemies = [];
@@ -37,7 +39,7 @@ class GameState {
       time -= 1
       if (time <= 0) {
         time = originalTime
-        this.level += 1
+        this.incLevel()
         this.incEnemies()
       }
     }, 1000)
@@ -60,10 +62,10 @@ class GameState {
       this.loop.stop()
     }
 
-    this.loop = kontra.GameLoop({
+    this.loop = GameLoop({
       update: function() {
         if (!gameState.hasStartedGame) {
-          if (kontra.keyPressed('y')) {
+          if (keyPressed('y')) {
             gameState.setHasStartedGame()
           }
           return
@@ -78,12 +80,9 @@ class GameState {
         gameState.removeProjectiles()
         gameState.removeFireEffects()
         gameState.removePickups()
-        if (gameState.getEnemies().length <= 0) {
-          gameState.incLevel()
-          gameState.incEnemies()
-        }
+
         if (!gameState.gameIsRunning) {
-          if (kontra.keyPressed('y')) {
+          if (keyPressed('y')) {
             gameState.setGameIsRunning(true)
             gameState.startGame()
           }
