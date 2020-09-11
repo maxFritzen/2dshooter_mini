@@ -1,4 +1,4 @@
-import { Sprite } from './kontra.js'
+import { Sprite } from './mini-kontra.bundle.js'
 
 export class Obj extends Sprite.class {
   constructor (x, y, color, damageColor, width, height, speed, hp) {

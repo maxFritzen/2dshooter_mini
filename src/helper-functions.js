@@ -1,4 +1,4 @@
-import { Sprite } from './kontra.js'
+import { Sprite } from './mini-kontra.bundle.js'
 import { gameState } from './index.js'
 export const collision = (objA, objB) => {
   // remember anchor x and y on enemy is 0.5

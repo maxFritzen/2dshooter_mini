@@ -1,4 +1,4 @@
-import { GameLoop, keyPressed } from './kontra.js'
+import { GameLoop, keyPressed } from './mini-kontra.bundle.js'
 import { createBlood, createFireEffect, createProjectile, createPickup } from './helper-functions.js'
 import { createNewPlayer, createEnemy, getText, gameState } from './index.js'
 

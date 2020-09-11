@@ -1,4 +1,4 @@
-import { keyPressed, degToRad } from './kontra.js'
+import { keyPressed, degToRad } from './mini-kontra.bundle.js'
 import { collision } from './helper-functions.js'
 import { gameState } from './index.js'
 import { Obj } from './object.js'
