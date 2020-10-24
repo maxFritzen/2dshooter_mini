@@ -40,7 +40,9 @@ export const getText = (text) => new Text({
   anchor: {x: 0.5, y: 0.5},
   textAlign: 'center'
 })
+const canvas = document.getElementById('gameCanvas')
 
-export const gameState = new GameState()
-gameState.startGame()
+export const gameState = new GameState(canvas)
+window.gameState = gameState
+gameState.drawStartScreen()()
 
