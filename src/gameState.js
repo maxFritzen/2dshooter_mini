@@ -1,4 +1,3 @@
-import { GameLoop, keyPressed } from './mini-kontra.bundle.js'
 import { createBlood, createFireEffect, createProjectile, createPickup } from './helper-functions.js'
 import { createNewPlayer, createEnemy, getText, gameState } from './index.js'
 import { drawRect } from './common-graphics.js';
@@ -19,25 +18,7 @@ export class GameState {
     this.timer = null
     this.canvas = canvas
     this.context = canvas.getContext('2d')
-    document.addEventListener('keypress', (e) => {
-      console.log('keypress', e.key)
-      this.keyPress = e.key
-    })
     this.keyPress = ''
-  }
-
-  keyPressed(key) {
-    console.log('keypressed', key, this.keyPress)
-  }
-
-  setHasStartedGame () {
-    this.hasStartedGame = true
-    this.setTimer()
-  }
-
-  setGameIsRunning (bool) {
-    this.gameIsRunning = bool
-    this.setTimer()
   }
 
   setTimer () {
@@ -61,13 +42,6 @@ export class GameState {
   }
 
   update = () => {
-    if (!gameState.hasStartedGame) {
-      if (this.keyPressed('y')) {
-        gameState.setHasStartedGame()
-      }
-      return
-    }
-
     gameState.getPlayer().update();
     gameState.getEnemies().map(sprite => sprite.update())
     gameState.getBlood().map(sprite => sprite.update())
@@ -77,21 +51,16 @@ export class GameState {
     gameState.removeProjectiles()
     gameState.removeFireEffects()
     gameState.removePickups()
-
-    if (!gameState.gameIsRunning) {
-      if (this.keyPressed('y')) {
-        gameState.setGameIsRunning(true)
-        gameState.startGame()
-      }
-    }
   }
 
   draw = () => {
-    drawRect(this.context, 0, 0, this.canvas.width, this.canvas.height, 'grey')
-    if (!gameState.hasStartedGame) {
-      getText('Start game? \n Press y').render()
+    if (!this.gameIsRunning) {
+      // draw is called once after showStartScreen. 
+      // Should be able to fix that but gameIsRunning boolean is easy-fix
+      console.log('this game is not running')
       return
     }
+    drawRect(this.context, 0, 0, this.canvas.width, this.canvas.height, 'grey')
     
     gameState.getBlood().map(sprite => sprite.render())
     gameState.getPickups().map(sprite => sprite.render())
@@ -99,16 +68,27 @@ export class GameState {
     gameState.getProjectiles().map(sprite => sprite.render())
     gameState.getFireEffects().map(sprite => sprite.render())
     gameState.getPlayer().render();
-    if (gameState.hasStartedGame && gameState.gameIsRunning) {
-      getText('WAVE: ' + gameState.level).render()
-    }
-    if (!gameState.gameIsRunning) {
-      getText(`You made it to wave ${gameState.getLevel()}! \nPlay again?  Press y`).render()
+
+    getText('WAVE: ' + gameState.level).render()
+    
+  }
+
+  keypress = (e) => {
+    if (e.key === 'y') {
+      this.startGame()
+      document.removeEventListener('keypress', this.keypress)
     }
   }
 
-  drawStartScreen = () =>{
-    getText('Start game? \n Press y').render()
+  drawStartScreen = (firstRun) => {
+    drawRect(this.context, 0, 0, this.canvas.width, this.canvas.height, 'grey')
+    
+    if (firstRun) {
+      getText('Start game? \n Press y').render()
+    } else {
+      getText(`You made it to wave ${gameState.getLevel()}! \nPlay again?  Press y`).render()
+    }
+    document.addEventListener('keypress', this.keypress)
   }
 
   startGame = () => {
@@ -118,11 +98,12 @@ export class GameState {
     this.fireEffects = [];
     this.blood = []
     this.player = createNewPlayer()
-    
+    this.gameIsRunning = true
     this.incEnemies()
     if (this.loop) {
       window.clearInterval(this.loop)
     }
+    this.setTimer()
 
     this.loop = setInterval(() => {
       this.update()

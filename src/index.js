@@ -14,8 +14,8 @@ export const createNewPlayer = () => new Player(
   'green',
   3,
   5,
-  2,
-  100
+  10,
+  10 
 )
 
 export const createEnemy = (x, y, width, height, target) => new Enemy(
@@ -44,5 +44,5 @@ const canvas = document.getElementById('gameCanvas')
 
 export const gameState = new GameState(canvas)
 window.gameState = gameState
-gameState.drawStartScreen()()
+gameState.drawStartScreen(true)
 
