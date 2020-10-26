@@ -62,11 +62,11 @@ export class GameState {
     }
     drawRect(this.context, 0, 0, this.canvas.width, this.canvas.height, 'grey')
     
-    gameState.getBlood().map(sprite => sprite.render())
-    gameState.getPickups().map(sprite => sprite.render())
-    gameState.getEnemies().map(sprite => sprite.render())
-    gameState.getProjectiles().map(sprite => sprite.render())
-    gameState.getFireEffects().map(sprite => sprite.render())
+    gameState.getBlood().forEach(sprite => sprite.render())
+    gameState.getPickups().forEach(sprite => sprite.render())
+    gameState.getEnemies().forEach(sprite => sprite.render())
+    gameState.getProjectiles().forEach(sprite => sprite.draw())
+    gameState.getFireEffects().forEach(sprite => sprite.render())
     gameState.getPlayer().render();
 
     getText('WAVE: ' + gameState.level).render()
@@ -121,7 +121,7 @@ export class GameState {
 
   incProjectiles (x, y, angle) {
     const randAngle = angle + (Math.random() / 30 - Math.random() / 30)
-    const newProjectile = createProjectile(x, y, randAngle)
+    const newProjectile = createProjectile(x, y, randAngle, this.canvas)
     const newFireEffect = createFireEffect(x, y, angle) 
     this.projectiles.push(newProjectile)
     this.fireEffects.push(newFireEffect)
@@ -141,7 +141,7 @@ export class GameState {
   
 
   removeProjectiles () {
-    this.projectiles = this.projectiles.filter(sprite => sprite.isAlive())
+    // this.projectiles = this.projectiles.filter(sprite => sprite.isAlive())
   }
 
   incEnemies () {
