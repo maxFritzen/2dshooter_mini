@@ -31,18 +31,10 @@ export const createEnemy = (x, y, width, height, target) => new Enemy(
   Math.random()
 )
 
-export const getText = (text) => new Text({
-  text,
-  font: '14px Helvetica',
-  color: 'black',
-  x: 100,
-  y: 30,
-  anchor: {x: 0.5, y: 0.5},
-  textAlign: 'center'
-})
-const canvas = document.getElementById('gameCanvas')
-
-export const gameState = new GameState(canvas)
+export const canvas = document.getElementById('gameCanvas')
+export const { width: canvasWidth, height: canvasHeight } = canvas
+export const ctx = canvas.getContext('2d')
+export const gameState = new GameState()
 window.gameState = gameState
 gameState.drawStartScreen(true)
 

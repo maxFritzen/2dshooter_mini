@@ -1,9 +1,10 @@
+// @ts-check
 import { createBlood, createFireEffect, createProjectile, createPickup } from './helper-functions.js'
-import { createNewPlayer, createEnemy, getText, gameState } from './index.js'
-import { drawRect } from './common-graphics.js';
+import { createNewPlayer, createEnemy, gameState, canvasWidth, canvasHeight } from './index.js'
+import { drawRect, drawStandardText } from './common-graphics.js';
 
 export class GameState {
-  constructor (canvas) {
+  constructor () {
     this.level = 1;
     this.enemies = [];
     this.projectiles = [];
@@ -14,10 +15,7 @@ export class GameState {
     this.gameIsRunning = true
     this.hasStartedGame = false
     this.loop = null
-    this.text = getText()
     this.timer = null
-    this.canvas = canvas
-    this.context = canvas.getContext('2d')
     this.keyPress = ''
   }
 
@@ -60,7 +58,8 @@ export class GameState {
       console.log('this game is not running')
       return
     }
-    drawRect(this.context, 0, 0, this.canvas.width, this.canvas.height, 'grey')
+    
+    drawRect(0, 0, canvasWidth, canvasHeight, 'grey')
     
     gameState.getBlood().forEach(sprite => sprite.render())
     gameState.getPickups().forEach(sprite => sprite.render())
@@ -69,7 +68,7 @@ export class GameState {
     gameState.getFireEffects().forEach(sprite => sprite.render())
     gameState.getPlayer().render();
 
-    getText('WAVE: ' + gameState.level).render()
+    drawStandardText('WAVE: ' + gameState.level)
     
   }
 
@@ -81,12 +80,12 @@ export class GameState {
   }
 
   drawStartScreen = (firstRun) => {
-    drawRect(this.context, 0, 0, this.canvas.width, this.canvas.height, 'grey')
+    drawRect(0, 0, canvasWidth, canvasHeight, 'grey')
     
     if (firstRun) {
-      getText('Start game? \n Press y').render()
+      drawStandardText('Start game? \n Press y')
     } else {
-      getText(`You made it to wave ${gameState.getLevel()}! \nPlay again?  Press y`).render()
+      drawStandardText(`You made it to wave ${gameState.getLevel()}! \nPlay again?  Press y`)
     }
     document.addEventListener('keypress', this.keypress)
   }
@@ -121,7 +120,7 @@ export class GameState {
 
   incProjectiles (x, y, angle) {
     const randAngle = angle + (Math.random() / 30 - Math.random() / 30)
-    const newProjectile = createProjectile(x, y, randAngle, this.canvas)
+    const newProjectile = createProjectile(x, y, randAngle)
     const newFireEffect = createFireEffect(x, y, angle) 
     this.projectiles.push(newProjectile)
     this.fireEffects.push(newFireEffect)
@@ -151,11 +150,11 @@ export class GameState {
     const getX = () => {
       let x
       if (direction === 'top' || direction === 'bot') {
-        x = Math.random() * this.context.canvas.width
+        x = Math.random() * canvasWidth
       } else if (direction === 'left') {
         x = Math.random() * -10
       } else if (direction === 'right') {
-        x = this.context.canvas.width - (Math.random() * 10)
+        x = canvasWidth - (Math.random() * 10)
       }
       return x
     }
@@ -163,11 +162,11 @@ export class GameState {
     const getY = () => {
       let y
       if (direction === 'left' || direction === 'right') {
-        y = Math.random() * this.context.canvas.height
+        y = Math.random() * canvasHeight
       } else if (direction === 'top') {
         y = Math.random() * -10
       } else if (direction === 'bot') {
-        y = this.context.canvas.height - (Math.random() * 10)
+        y = canvasHeight - (Math.random() * 10)
       }
       return y
     }

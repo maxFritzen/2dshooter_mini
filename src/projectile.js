@@ -2,14 +2,13 @@
 import { drawCircle } from './common-graphics.js'
 
 export class Projectile {
-  constructor(startX, startY, angle, canvas) {
+  constructor(startX, startY, angle) {
     this.x = startX,
     this.y = startY
     this.w = 10
     this.speed = 1
     this.angle = angle
     this.color = 'green'
-    this.canvas = canvas
 
   }
 
@@ -22,7 +21,7 @@ export class Projectile {
   }
   draw () {
     const { x, y , w } = this
-    drawCircle(this.canvas.getContext('2d'),x, y, w, this.color)
+    drawCircle(x, y, w, this.color)
   }
 
 }

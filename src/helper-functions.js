@@ -1,9 +1,8 @@
 // @ts-check
 import { Sprite } from './mini-kontra.bundle.js'
-import { gameState } from './index.js'
 import { Projectile } from './projectile.js'
 export const collision = (objA, objB) => {
-  // remember anchor x and y on enemy is 0.5
+  // remember anchor x and y on enemy is 0.5. Not after refactoring. collision should proably change to
   const objAtop = objA.y - objA.height / 2
   const objAbot = objA.y + objA.height / 2
   const objAleft = objA.x - objA.width / 2
@@ -24,39 +23,9 @@ export const collision = (objA, objB) => {
 }
 
 
-export function createProjectile (x, y, angle, canvas) {
-  const projectile = new Projectile(x, y, angle, canvas)
+export function createProjectile (x, y, angle) {
+  const projectile = new Projectile(x, y, angle)
   return projectile
-  // const projectile = Sprite({
-  //   id: x + y + angle, 
-  //   x: x,
-  //   y: y,
-  //   width: 3,
-  //   height: 1,
-  //   rotation: angle,
-  //   dx: Math.cos(angle) * 2.5,
-  //   dy: Math.sin(angle) * 2.5,
-  //   color: 'green',
-  //   ttl: 100,
-  //   anchor: { x: 0.5, y: 0.5},
-  //   update () {
-      
-  //     for (const enemy of gameState.getEnemies()) {
-  //       if (collision(this, enemy)) {
-  //           // collision detected!
-  //           gameState.incBlood(this.x, this.y, angle)
-  //           this.height = 5
-  //           this.width = 8
-  //           enemy.hit(20);
-  //           this.ttl = 0;
-  //           break
-  //       }
-  //     }
-
-  //     this.advance()    
-  //   }
-  // })
-  // return projectile
 }
 
 export function createFireEffect (x, y, angle) {
