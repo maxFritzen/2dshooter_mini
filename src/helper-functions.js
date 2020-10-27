@@ -1,6 +1,6 @@
 // @ts-check
-import { Sprite } from './mini-kontra.bundle.js'
 import { Projectile } from './projectile.js'
+import { Sprite } from './sprite.js'
 export const collision = (objA, objB) => {
   // remember anchor x and y on enemy is 0.5. Not after refactoring. collision should proably change to
   const objAtop = objA.y - objA.height / 2
@@ -29,52 +29,17 @@ export function createProjectile (x, y, angle) {
 }
 
 export function createFireEffect (x, y, angle) {
-  const projectile = Sprite({
-    id: x + y + angle, 
-    x: x,
-    y: y,
-    width: 2,
-    height: 3,
-    rotation: angle,
-    color: 'yellow',
-    ttl: 5,
-    anchor: { x: -0.3, y: 0.5 }
-  })
+  const projectile = new Sprite(x, y, angle, 8, 4, 'yellow', 5)
   return projectile
 }
 
 export function createBlood (x, y, angle, width = 2, height = 2) {
-  const blood = Sprite({
-    id: x + y + angle, 
-    x,
-    y,
-    width,
-    height,
-    rotation: angle,
-    color: 'red',
-    ttl: 300, 
-    render () {
-      this.context.fillStyle = this.color
-      this.context.beginPath()
-      this.context.arc(0, 0, width / 2, 0, 2 * Math.PI)
-      this.context.fill()
-    }
-  })
+  const blood = new Sprite(x, y, angle, width, height, 'red')
   return blood
 }
 
 export function createPickup (x, y, angle, width = 10, height = 10) {
-  const pickup = Sprite({
-    id: x + y + angle, 
-    x,
-    y,
-    width,
-    height,
-    rotation: angle,
-    color: 'purple',
-    ttl: 300,
-    anchor: { x: 0.5, y: 0.5 }
-  })
+  const pickup = new Sprite(x, y, angle, width, height, 'purple')
   return pickup
 }
 

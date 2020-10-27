@@ -61,11 +61,11 @@ export class GameState {
     
     drawRect(0, 0, canvasWidth, canvasHeight, 'grey')
     
-    gameState.getBlood().forEach(sprite => sprite.render())
-    gameState.getPickups().forEach(sprite => sprite.render())
+    gameState.getBlood().forEach(sprite => sprite.draw())
+    gameState.getPickups().forEach(sprite => sprite.draw())
     gameState.getEnemies().forEach(sprite => sprite.render())
     gameState.getProjectiles().forEach(sprite => sprite.draw())
-    gameState.getFireEffects().forEach(sprite => sprite.render())
+    gameState.getFireEffects().forEach(sprite => sprite.draw())
     gameState.getPlayer().render();
 
     drawStandardText('WAVE: ' + gameState.level)
@@ -135,7 +135,7 @@ export class GameState {
   }
 
   removePickups () {
-    this.pickups = this.pickups.filter((s) => s.isAlive())
+    // this.pickups = this.pickups.filter((s) => s.isAlive())
   }
   
 
@@ -144,6 +144,8 @@ export class GameState {
   }
 
   incEnemies () {
+    return
+
     const numberOfEnemies = 404 / 100 * this.level
     const directions = ['top', 'right', 'bot', 'left']
     const direction = directions[Math.floor(Math.random() * 4)]
@@ -202,7 +204,7 @@ export class GameState {
   }
 
   removeEnemies () {
-    this.enemies = this.enemies.filter(sprite => sprite.isAlive())
+    // this.enemies = this.enemies.filter(sprite => sprite.isAlive())
   }
 
   getLevel () {

@@ -1,5 +1,5 @@
 // @ts-check
-import { drawCircle } from './common-graphics.js'
+import { drawCircle, drawRect } from './common-graphics.js'
 
 export class Projectile {
   constructor(startX, startY, angle) {
