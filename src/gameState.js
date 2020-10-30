@@ -41,10 +41,10 @@ export class GameState {
 
   update = () => {
     gameState.getPlayer().update();
-    gameState.getEnemies().map(sprite => sprite.update())
-    gameState.getBlood().map(sprite => sprite.update())
-    gameState.getProjectiles().map(sprite => sprite.update())
-    gameState.getFireEffects().map(sprite => sprite.update())
+    gameState.getEnemies().forEach(sprite => sprite.update())
+    gameState.getBlood().forEach(sprite => sprite.update())
+    gameState.getProjectiles().forEach(sprite => sprite.update())
+    gameState.getFireEffects().forEach(sprite => sprite.update())
     gameState.removeEnemies()
     gameState.removeProjectiles()
     gameState.removeFireEffects()
@@ -66,7 +66,7 @@ export class GameState {
     gameState.getEnemies().forEach(sprite => sprite.render())
     gameState.getProjectiles().forEach(sprite => sprite.draw())
     gameState.getFireEffects().forEach(sprite => sprite.draw())
-    gameState.getPlayer().render();
+    gameState.getPlayer().draw();
 
     drawStandardText('WAVE: ' + gameState.level)
     
@@ -97,6 +97,9 @@ export class GameState {
     this.fireEffects = [];
     this.blood = []
     this.player = createNewPlayer()
+    this.player.addKeyListeners()
+    this.player.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
+
     this.gameIsRunning = true
     this.incEnemies()
     if (this.loop) {

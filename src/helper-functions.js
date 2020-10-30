@@ -43,3 +43,6 @@ export function createPickup (x, y, angle, width = 10, height = 10) {
   return pickup
 }
 
+export function degToRad (radians) {
+  return radians * Math.PI / 180
+} 

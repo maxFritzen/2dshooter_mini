@@ -14,7 +14,7 @@ export const createNewPlayer = () => new Player(
   'green',
   3,
   5,
-  10,
+  0, // Not sure about speed
   10 
 )
 
