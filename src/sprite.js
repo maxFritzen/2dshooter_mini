@@ -25,11 +25,12 @@ export class Sprite {
   
   draw () {
     const { x, y, width, height } = this
-    const newX = x + Math.cos(this.angle)
-    const newY = y + Math.sin(this.angle)
-
-    drawRect(newX, newY, width, height, this.color)
-    // drawCircle(x, y, width, this.color)
+    ctx.save()
+    ctx.translate(x + width / 2, y + height / 2)
+    ctx.rotate(this.angle + (90 * Math.PI / 180))
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-width / 2, -height / 2, width, height);
+    ctx.restore()
   }
 
 }
