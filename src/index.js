@@ -1,10 +1,7 @@
 
-import { init, initKeys, Text } from './mini-kontra.bundle.js'
 import { GameState } from './gameState.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
-init();
-initKeys();
 
 
 export const createNewPlayer = () => new Player(
