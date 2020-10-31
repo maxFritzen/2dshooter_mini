@@ -49,7 +49,6 @@ export class Player extends Obj {
   }
 
   shoot () {
-    console.log('shoot')
     if (this.bullets <= 0) {
       setTimeout(() => {
         this.bullets = ammo * this.level / 2
@@ -58,7 +57,7 @@ export class Player extends Obj {
 
     if (this.shootingSpeedInterval) return
       if (this.bullets > 0) {
-        gameState.incProjectiles(this.x, this.y, this.angle)
+        gameState.incProjectiles(this.x + this.width / 2, this.y + this.height / 2, this.angle)
         
         this.bullets -= 1
         this.shootingSpeedInterval = setTimeout(() => {
@@ -126,11 +125,11 @@ export class Player extends Obj {
     }
 
     if (this.steerLeft) {
-        this.angle -= 0.4
+        this.angle -= 0.1
     }
 
     if (this.steerRight) {
-      this.angle += 0.4
+      this.angle += 0.1
     }
 
     this.stayInsideMap()

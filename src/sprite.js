@@ -24,13 +24,8 @@ export class Sprite {
   }
   
   draw () {
-    const { x, y, width, height } = this
-    ctx.save()
-    ctx.translate(x + width / 2, y + height / 2)
-    ctx.rotate(this.angle + (90 * Math.PI / 180))
-    ctx.fillStyle = this.color;
-    ctx.fillRect(-width / 2, -height / 2, width, height);
-    ctx.restore()
+    const { x, y, width, height, color } = this
+    drawRect(x, y, width, height, color)
   }
 
 }

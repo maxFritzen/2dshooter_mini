@@ -9,7 +9,7 @@ export const createNewPlayer = () => new Player(
   50,
   'blue',
   'green',
-  3,
+  8,
   5,
   0, // Not sure about speed
   10 

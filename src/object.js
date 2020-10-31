@@ -1,5 +1,6 @@
 // @ts-check
 
+import { ctx } from "./index.js";
 import { Sprite } from "./sprite.js";
 
 export class Obj extends Sprite {
@@ -10,6 +11,16 @@ export class Obj extends Sprite {
     this.anchor = {x: 0.5, y: 0.5}
     this.speed = speed;
     this.hp = hp;
+  }
+
+  draw () {
+    const { x, y, width, height } = this
+    ctx.save()
+    ctx.translate(x + width / 2, y + height / 2)
+    ctx.rotate(this.angle + (90 * Math.PI / 180)) // 90 is just for starting rotation
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-width / 2, -height / 2, width, height);
+    ctx.restore()
   }
  
   hit (dmg) {

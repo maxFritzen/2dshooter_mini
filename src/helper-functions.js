@@ -1,4 +1,5 @@
 // @ts-check
+import { ctx } from './index.js'
 import { Projectile } from './projectile.js'
 import { Sprite } from './sprite.js'
 export const collision = (objA, objB) => {
@@ -29,7 +30,19 @@ export function createProjectile (x, y, angle) {
 }
 
 export function createFireEffect (x, y, angle) {
-  const projectile = new Sprite(x, y, angle, 8, 4, 'yellow', 5)
+  const width = 15
+  const height = 8
+  const projectile = new Sprite(x, y, angle, width, height, 'yellow', 5)
+  projectile.draw = function() {
+    ctx.save()
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.translate(-x, -y);
+
+    ctx.fillStyle = 'red';
+    ctx.fillRect(x, y, width, height)
+    ctx.restore()
+  }
   return projectile
 }
 
