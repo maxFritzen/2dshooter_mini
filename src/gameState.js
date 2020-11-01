@@ -1,6 +1,6 @@
 // @ts-check
 import { createBlood, createFireEffect, createProjectile, createPickup } from './helper-functions.js'
-import { createNewPlayer, createEnemy, gameState, canvasWidth, canvasHeight } from './index.js'
+import { createNewPlayer, createEnemy, gameState, canvasWidth, canvasHeight, drawMap } from './index.js'
 import { drawRect, drawStandardText } from './common-graphics.js';
 
 export class GameState {
@@ -41,10 +41,10 @@ export class GameState {
 
   update = () => {
     gameState.getPlayer().update();
+    gameState.getFireEffects().forEach(sprite => sprite.update())
+    gameState.getProjectiles().forEach(sprite => sprite.update())
     gameState.getEnemies().forEach(sprite => sprite.update())
     gameState.getBlood().forEach(sprite => sprite.update())
-    gameState.getProjectiles().forEach(sprite => sprite.update())
-    gameState.getFireEffects().forEach(sprite => sprite.update())
     gameState.removeEnemies()
     gameState.removeProjectiles()
     gameState.removeFireEffects()
@@ -60,7 +60,7 @@ export class GameState {
     }
     
     drawRect(0, 0, canvasWidth, canvasHeight, 'grey')
-    
+    drawMap()
     gameState.getBlood().forEach(sprite => sprite.draw())
     gameState.getPickups().forEach(sprite => sprite.draw())
     gameState.getEnemies().forEach(sprite => sprite.render())
@@ -81,7 +81,7 @@ export class GameState {
 
   drawStartScreen = (firstRun) => {
     drawRect(0, 0, canvasWidth, canvasHeight, 'grey')
-    
+    drawMap()
     if (firstRun) {
       drawStandardText('Start game? \n Press y')
     } else {

@@ -30,8 +30,8 @@ export function createProjectile (x, y, angle) {
 }
 
 export function createFireEffect (x, y, angle) {
-  const width = 15
-  const height = 8
+  const width = 2
+  const height = 16
   const projectile = new Sprite(x, y, angle, width, height, 'yellow', 5)
   projectile.draw = function() {
     ctx.save()
@@ -40,8 +40,13 @@ export function createFireEffect (x, y, angle) {
     ctx.translate(-x, -y);
 
     ctx.fillStyle = 'red';
-    ctx.fillRect(x, y, width, height)
+    ctx.fillRect(x + 2, y - height/2, width, height)
+    // ctx.fillStyle = 'black';
+    // ctx.fillRect(x, y, 5, 5)
+    // ctx.fillStyle = 'green';
+    // ctx.fillRect(x, y, width, 1)
     ctx.restore()
+
   }
   return projectile
 }

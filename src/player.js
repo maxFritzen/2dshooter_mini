@@ -1,13 +1,14 @@
 // @ts-check
 import { collision, degToRad } from './helper-functions.js'
-import { canvasHeight, canvasWidth, gameState } from './index.js'
+import { canvasHeight, canvasWidth, ctx, gameState } from './index.js'
 import { Obj } from './object.js'
 
 let ammo = 20
 export class Player extends Obj {
   constructor (x, y, color, damageColor, width, height, speed, hp) {
-    super(x, y, color, damageColor, width, height, speed, hp)
+    super(x, y, color, damageColor, width * 2, height, speed, hp)
     this.shootingSpeedInterval = null
+    this.animationShootingSpeedInterval = 0
     this.rotateSpeedInterval = null
     this.pickupInterval = null
     this.bullets = ammo
@@ -48,7 +49,8 @@ export class Player extends Obj {
     this.level++
   }
 
-  shoot () {
+  shoot = () => {
+    console.log('Shoot')
     if (this.bullets <= 0) {
       setTimeout(() => {
         this.bullets = ammo * this.level / 2
@@ -57,13 +59,25 @@ export class Player extends Obj {
 
     if (this.shootingSpeedInterval) return
       if (this.bullets > 0) {
-        gameState.incProjectiles(this.x + this.width / 2, this.y + this.height / 2, this.angle)
-        
+        const centerX = this.x + this.width / 2
+        const centerY = this.y + this.height / 2
+        this.animationShootingSpeedInterval = 1
+        gameState.incProjectiles(centerX, centerY, this.angle)
         this.bullets -= 1
         this.shootingSpeedInterval = setTimeout(() => {
           this.shootingSpeedInterval = null
         }, 404 / this.level)
       }
+  }
+
+  draw () {
+    const { x, y, width, height } = this
+    ctx.save()
+    ctx.translate(x + width / 2, y + height / 2)
+    ctx.rotate(this.angle + (90 * Math.PI / 180)) // 90 is just for starting rotation
+    ctx.fillStyle = this.color;
+    ctx.fillRect(-width / 2, -height / 2, width, height);
+    ctx.restore()
   }
 
   addKeyListeners () {
