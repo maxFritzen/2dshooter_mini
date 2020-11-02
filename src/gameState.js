@@ -29,8 +29,8 @@ export class GameState {
       time -= 1
       if (time <= 0) {
         time = originalTime
-        this.incLevel()
-        this.incEnemies()
+        // this.incLevel()
+        // this.incEnemies()
       }
     }, 1000)
   }
@@ -45,7 +45,7 @@ export class GameState {
     gameState.getProjectiles().forEach(sprite => sprite.update())
     gameState.getEnemies().forEach(sprite => sprite.update())
     gameState.getBlood().forEach(sprite => sprite.update())
-    gameState.removeEnemies()
+    // gameState.removeEnemies()
     gameState.removeProjectiles()
     gameState.removeFireEffects()
     gameState.removePickups()
@@ -63,7 +63,7 @@ export class GameState {
     drawMap()
     gameState.getBlood().forEach(sprite => sprite.draw())
     gameState.getPickups().forEach(sprite => sprite.draw())
-    gameState.getEnemies().forEach(sprite => sprite.render())
+    gameState.getEnemies().forEach(sprite => sprite.draw())
     gameState.getProjectiles().forEach(sprite => sprite.draw())
     gameState.getFireEffects().forEach(sprite => sprite.draw())
     gameState.getPlayer().draw();
@@ -147,9 +147,9 @@ export class GameState {
   }
 
   incEnemies () {
-    return
 
-    const numberOfEnemies = 404 / 100 * this.level
+    const numberOfEnemies = 1
+    // const numberOfEnemies = 404 / 100 * this.level
     const directions = ['top', 'right', 'bot', 'left']
     const direction = directions[Math.floor(Math.random() * 4)]
     const getX = () => {
@@ -182,10 +182,11 @@ export class GameState {
     for (let i = 0; i < numberOfEnemies; i++) {
       const x = getX()
       const y = getY()
-      const random = Math.floor(Math.random() * 5) + 3 
-      const width = random
-      const height = random + 1
+      // const random = Math.floor(Math.random() * 5) + 3 
+      const width = 20
+      const height = 50
       this.enemies.push(createEnemy(x, y, width, height, target))
+      console.log('push enemie', this.enemies)
     }
 
     
@@ -207,7 +208,7 @@ export class GameState {
   }
 
   removeEnemies () {
-    // this.enemies = this.enemies.filter(sprite => sprite.isAlive())
+    this.enemies = this.enemies.filter(sprite => sprite.isAlive())
   }
 
   getLevel () {

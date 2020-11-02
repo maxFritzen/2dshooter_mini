@@ -28,6 +28,8 @@ export class Player extends Obj {
     this.controlKeyReverse = undefined
     this.controlKeyLeft = undefined
     this.controlKeyShoot = undefined
+
+    this.currentGridUnitPosition = 0
   }
 
   stayInsideMap () {
@@ -155,7 +157,10 @@ export class Player extends Obj {
 
     // which grid unit am I in?
     const currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
-    console.log(currentGridUnit)
+
+    this.currentGridUnitPosition = currentGridUnit
+    console.log(this.currentGridUnitPosition)
+    
   } 
 
   collisionCheckPickup () {
