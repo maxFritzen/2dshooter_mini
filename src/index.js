@@ -49,10 +49,17 @@ function insertSquares () {
     }
   }
 }
+
 insertSquares()
 
 export function colRowIndex (col, row) {
   return col + gridCols * row
+}
+
+export function findGridUnit (centerX, centerY) {
+  const gridCol = Math.floor(centerX / gridWidth)
+  const gridRow = Math.floor(centerY / gridHeight)
+  return colRowIndex(gridCol, gridRow)
 }
 
 export function drawMap() {

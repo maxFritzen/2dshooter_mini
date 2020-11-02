@@ -1,6 +1,6 @@
 // @ts-check
 import { collision, degToRad } from './helper-functions.js'
-import { canvasHeight, canvasWidth, ctx, gameState } from './index.js'
+import { canvasHeight, canvasWidth, ctx, findGridUnit, gameState } from './index.js'
 import { Obj } from './object.js'
 
 let ammo = 20
@@ -125,7 +125,7 @@ export class Player extends Obj {
   move() {
     if (this.ttl <= 0) return
     if (this.drive) {
-      this.speed = 1
+      this.speed = 5
     } else {
       this.speed = 0
     }
@@ -152,6 +152,10 @@ export class Player extends Obj {
 
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
+
+    // which grid unit am I in?
+    const currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
+    console.log(currentGridUnit)
   } 
 
   collisionCheckPickup () {
