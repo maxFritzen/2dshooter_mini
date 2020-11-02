@@ -30,43 +30,41 @@ export const gridWidth = 80;
 export const gridHeight = 60;
 export const gridCols = 800 / gridWidth;
 export const gridRows = 600 / gridHeight;
-console.log(gridCols,gridRows, gridWidth)
-// for (let eachRow = 0; eachRow < gridRows; eachRow++) {
-//   for (let eachCol = 0; eachCol < gridCols; eachCol++) {
-//     const gridUnit = grid[colRowIndex(eachCol, eachRow)]
-//     if (eachRow % 2 === 0) {
-//       if (eachCol % 2 === 0) {
-//         grid[gridUnit] = 3
-//       }
-//     } else {
-//       if (eachCol % 2 !== 0) {
-//         grid[gridUnit] = 3
-//       }
-//     }
-//   }
-// }
+const darkSquare = 10
+
+function insertSquares () {
+  // To visualize grid
+  for (let eachRowFirst = 0; eachRowFirst < gridRows; eachRowFirst++) {
+    for (let eachColFirst = 0; eachColFirst < gridCols; eachColFirst++) {
+      const index = colRowIndex(eachColFirst, eachRowFirst)
+      if (eachRowFirst % 2 === 0) {
+        if (eachColFirst % 2 === 0) {
+          grid[index] = darkSquare
+        }
+      } else {
+        if (eachColFirst % 2 !== 0) {
+          grid[index] = darkSquare
+        }
+      }
+    }
+  }
+}
+insertSquares()
 
 export function colRowIndex (col, row) {
   return col + gridCols * row
 }
 
 export function drawMap() {
-  console.log('grid', grid)
   let drawTileX = 0
   let drawTileY = 0
   const width = gridWidth
   const height = gridHeight
   for (let eachRow = 0; eachRow < gridRows; eachRow++) {
     for (let eachCol = 0; eachCol < gridCols; eachCol++) {
-      const gridUnit = grid[colRowIndex(eachCol, eachRow)]
-      if (eachRow % 2 === 0) {
-        if (eachCol % 2 === 0) {
-          drawRect(drawTileX, drawTileY, width, height, 'darkgrey')
-        }
-      } else {
-        if (eachCol % 2 !== 0) {
-          drawRect(drawTileX, drawTileY, width, height, 'darkgrey')
-        }
+      const gridUnit = colRowIndex(eachCol, eachRow)
+      if (grid[gridUnit] === darkSquare) {
+        drawRect(drawTileX, drawTileY, width, height, 'darkgrey')
       }
       drawTileX += gridWidth
     }
