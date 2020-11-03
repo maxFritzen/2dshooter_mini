@@ -13,6 +13,7 @@ export class Enemy extends Obj {
     this.limit = this.originalSpeed
     this.hp = this.width + this.height
     this.ttl = 10
+    this.damage = 10
   }
 
   die () {
@@ -45,6 +46,13 @@ export class Enemy extends Obj {
 
   update() {
     this.move()
+  }
+
+  checkCollisionWithPlayer () {
+    const isCollision = collision(this.target, this)
+    if (isCollision) {
+      this.target.hit(this.damage)
+    }
   }
 
   move() {
@@ -87,7 +95,7 @@ export class Enemy extends Obj {
         const collidingEnemyX = enemies[i].x
         const collidingEnemyY = enemies[i].y
         // if dir === right OR left => go up or down
-        if (direction === 'left' && direction === 'right') {
+        if (direction === 'left' || direction === 'right') {
           if (newY < collidingEnemyY) {
             newY -= 1
           } else if (newY > collidingEnemyY) {
@@ -108,9 +116,9 @@ export class Enemy extends Obj {
     this.x = newX
     this.y = newY    
     const currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
-    console.log(currentGridUnit)
     if (currentGridUnit === this.target.currentGridUnitPosition) {
-      console.log('same grid unit')
+      // Check for collision with player
+      this.checkCollisionWithPlayer()
     }
   }
 }

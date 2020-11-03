@@ -159,7 +159,6 @@ export class Player extends Obj {
     const currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
 
     this.currentGridUnitPosition = currentGridUnit
-    console.log(this.currentGridUnitPosition)
     
   } 
 

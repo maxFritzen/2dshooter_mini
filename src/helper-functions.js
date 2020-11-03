@@ -3,16 +3,15 @@ import { ctx } from './index.js'
 import { Projectile } from './projectile.js'
 import { Sprite } from './sprite.js'
 export const collision = (objA, objB) => {
-  // remember anchor x and y on enemy is 0.5. Not after refactoring. collision should proably change to
-  const objAtop = objA.y - objA.height / 2
-  const objAbot = objA.y + objA.height / 2
-  const objAleft = objA.x - objA.width / 2
-  const objAright = objA.x + objA.width / 2
+  const objAtop = objA.y - objA.height
+  const objAbot = objA.y + objA.height
+  const objAleft = objA.x - objA.width
+  const objAright = objA.x + objA.width
 
-  const objBtop = objB.y - objB.height / 2
-  const objBbot = objB.y + objB.height / 2
-  const objBleft = objB.x - objB.width / 2
-  const objBright = objB.x + objB.width / 2
+  const objBtop = objB.y - objB.height
+  const objBbot = objB.y + objB.height
+  const objBleft = objB.x - objB.width
+  const objBright = objB.x + objB.width
 
 
   const collisionY = objAtop <= objBbot
