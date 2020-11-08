@@ -32,12 +32,14 @@ export class GameState {
   }
 
   addToEnemiesGridPositions (index, enemy) {
-    this.enemiesGridPositions[index].push(enemy)
+    if (index > 0 && index < this.enemiesGridPositions.length) {
+      this.enemiesGridPositions[index].push(enemy)
+    }
   }
 
   removeFromEnemiesGridPositions (index, enemyId) {
-    if (index === null || index === undefined) console.log('UNEDFINED INDEX')
-    if (index === null || index === undefined) return
+    if (this.enemiesGridPositions[index] === undefined) console.log('UNEDFINED INDEX')
+    if (this.enemiesGridPositions[index] === undefined) return
     this.enemiesGridPositions[index] = this.enemiesGridPositions[index].filter((enemy) => enemy.id !== enemyId)
   }
 
@@ -170,7 +172,7 @@ export class GameState {
 
   incEnemies () {
 
-    const numberOfEnemies = 1
+    const numberOfEnemies = 100
     // const numberOfEnemies = 404 / 100 * this.level
     const directions = ['top', 'right', 'bot', 'left']
     const direction = directions[Math.floor(Math.random() * 4)]
@@ -208,7 +210,6 @@ export class GameState {
       const width = 20
       const height = 50
       this.enemies.push(createEnemy(x, y, width, height, target))
-      console.log('push enemie', this.enemies)
     }
 
     

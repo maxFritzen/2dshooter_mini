@@ -2,7 +2,7 @@
 import { GameState } from './gameState.js'
 import { Player } from './player.js'
 import { Enemy } from './enemy.js'
-import { drawRect } from './common-graphics.js';
+import { drawRect, drawText } from './common-graphics.js';
 
 const levelOne = [
   1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -73,6 +73,7 @@ export function drawMap() {
       if (grid[gridUnit] === darkSquare) {
         drawRect(drawTileX, drawTileY, width, height, 'darkgrey')
       }
+      drawText(gridUnit.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2, 'black')
       drawTileX += gridWidth
     }
     drawTileY += gridHeight

@@ -82,18 +82,37 @@ export class Enemy extends Obj {
       newY -= 1
     }
     this.direction = direction
+  
+    this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.height/2)
+    this.currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
+    if (this.currentGridUnit < 0 || this.currentGridUnit > gameState.enemiesGridPositions.length) {
+      this.x = newX
+      this.y = newY  
+      return 
+    }
+    if (this.currentGridUnit === this.target.currentGridUnitPosition) {
+      // Check for collision with player
+      this.checkCollisionWithPlayer()
+    }
+
+    if (this.currentGridUnit !== this.prevGridUnit) {
+      // This will enable collision check with enemies in same gridUnit
+      gameState.addToEnemiesGridPositions(this.currentGridUnit, this)
+      gameState.removeFromEnemiesGridPositions(this.prevGridUnit, this.id)
+    }
 
     // check collision with other enemies
-    const enemies = gameState.getEnemies()
+    // check collision with enemy
+    const enemies = gameState.enemiesGridPositions[this.currentGridUnit]
+    const newValues = {
+      height: this.height,
+      width: this.width,
+      x: newX,
+      y: newY
+    }
     for (let i = 0; i <= enemies.length - 1; i++) {
-      const newValues = {
-        height: this.height,
-        width: this.width,
-        x: newX,
-        y: newY
-      }
-
       if (enemies[i].id !== this.id && collision(newValues, enemies[i])) {
+        this.color = 'green'
         const collidingEnemyX = enemies[i].x
         const collidingEnemyY = enemies[i].y
         // if dir === right OR left => go up or down
@@ -112,22 +131,10 @@ export class Enemy extends Obj {
         }
         
       } 
-      
     }
 
     this.x = newX
-    this.y = newY    
-    this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.height/2)
-    this.currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
-    if (this.currentGridUnit === this.target.currentGridUnitPosition) {
-      // Check for collision with player
-      this.checkCollisionWithPlayer()
-    }
+    this.y = newY  
 
-    if (this.currentGridUnit !== this.prevGridUnit) {
-      // This will enable collision check with enemies in same gridUnit
-      gameState.addToEnemiesGridPositions(this.currentGridUnit, this)
-      gameState.removeFromEnemiesGridPositions(this.prevGridUnit, this.id)
-    }
   }
 }
