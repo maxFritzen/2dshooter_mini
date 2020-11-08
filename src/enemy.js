@@ -14,6 +14,8 @@ export class Enemy extends Obj {
     this.hp = this.width + this.height
     this.ttl = 10
     this.damage = 10
+    this.prevGridUnit = null
+    this.currentGridUnit = null
   }
 
   die () {
@@ -115,10 +117,17 @@ export class Enemy extends Obj {
 
     this.x = newX
     this.y = newY    
-    const currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
-    if (currentGridUnit === this.target.currentGridUnitPosition) {
+    this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.height/2)
+    this.currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
+    if (this.currentGridUnit === this.target.currentGridUnitPosition) {
       // Check for collision with player
       this.checkCollisionWithPlayer()
+    }
+
+    if (this.currentGridUnit !== this.prevGridUnit) {
+      // This will enable collision check with enemies in same gridUnit
+      gameState.addToEnemiesGridPositions(this.currentGridUnit, this)
+      gameState.removeFromEnemiesGridPositions(this.prevGridUnit, this.id)
     }
   }
 }

@@ -1,6 +1,6 @@
 // @ts-check
 import { createBlood, createFireEffect, createProjectile, createPickup } from './helper-functions.js'
-import { createNewPlayer, createEnemy, gameState, canvasWidth, canvasHeight, drawMap } from './index.js'
+import { createNewPlayer, createEnemy, gameState, canvasWidth, canvasHeight, drawMap, grid } from './index.js'
 import { drawRect, drawStandardText } from './common-graphics.js';
 
 export class GameState {
@@ -17,6 +17,28 @@ export class GameState {
     this.loop = null
     this.timer = null
     this.keyPress = ''
+    this.enemiesGridPositions = [] // array of array
+  }
+
+  setStartEnemiesGridPositions () {
+    console.log('grid:', grid.length)
+    this.enemiesGridPositions = new Array(grid.length)
+    const length = this.enemiesGridPositions.length
+    for (let i = 0; i <= length -1; i++) {
+      // this.enemiesGridPositions.fill([]) doesnt work because it seems to set every [] as same reference or something, interesting
+      this.enemiesGridPositions[i] = []
+    }
+    console.log('this.enemiesGridPositions', this.enemiesGridPositions.length)
+  }
+
+  addToEnemiesGridPositions (index, enemy) {
+    this.enemiesGridPositions[index].push(enemy)
+  }
+
+  removeFromEnemiesGridPositions (index, enemyId) {
+    if (index === null || index === undefined) console.log('UNEDFINED INDEX')
+    if (index === null || index === undefined) return
+    this.enemiesGridPositions[index] = this.enemiesGridPositions[index].filter((enemy) => enemy.id !== enemyId)
   }
 
   setTimer () {
@@ -99,7 +121,7 @@ export class GameState {
     this.player = createNewPlayer()
     this.player.addKeyListeners()
     this.player.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
-
+    this.setStartEnemiesGridPositions()
     this.gameIsRunning = true
     this.incEnemies()
     if (this.loop) {
