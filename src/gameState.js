@@ -69,7 +69,7 @@ export class GameState {
     gameState.getProjectiles().forEach(sprite => sprite.update())
     gameState.getEnemies().forEach(sprite => sprite.update())
     gameState.getBlood().forEach(sprite => sprite.update())
-    // gameState.removeEnemies()
+    gameState.removeEnemies()
     gameState.removeProjectiles()
     gameState.removeFireEffects()
     gameState.removePickups()
@@ -167,12 +167,12 @@ export class GameState {
   
 
   removeProjectiles () {
-    // this.projectiles = this.projectiles.filter(sprite => sprite.isAlive())
+    this.projectiles = this.projectiles.filter(x => x.isAlive())
   }
 
   incEnemies () {
 
-    const numberOfEnemies = 100
+    const numberOfEnemies = 1
     // const numberOfEnemies = 404 / 100 * this.level
     const directions = ['top', 'right', 'bot', 'left']
     const direction = directions[Math.floor(Math.random() * 4)]

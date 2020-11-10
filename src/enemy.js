@@ -19,13 +19,12 @@ export class Enemy extends Obj {
   }
 
   die () {
-    this.drop ()
+    // this.drop ()
     gameState.incBlood(this.x, this.y, 0, this.width + 2, this.height + 2)
     this.ttl = 0
   }
 
   isAlive () {
-    return true
     return this.ttl > 0
   }
 
