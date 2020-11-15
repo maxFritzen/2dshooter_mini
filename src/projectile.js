@@ -33,6 +33,7 @@ export class Projectile {
     // Enemy collision
     this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.width/2)
     this.currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.width/2)
+    if (grid[this.currentGridUnit] === undefined) return
     if (this.prevGridUnit !== this.currentGridUnit) {
       if (grid[this.currentGridUnit].type === typeEnemy) {
         
