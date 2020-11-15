@@ -27,7 +27,7 @@ export const darkBrick = 3
 export const lightBrick = 4
 export const gridWidth = 10;
 export const gridHeight = 10;
-export const gridCellSize = 200
+export const gridCellSize = 10
 export const gridCols = 800 / gridCellSize;
 export const gridRows = 600 / gridCellSize;
 export let grid = new Array(gridCols * gridRows); // 4600 if gridCellSize = 10
@@ -90,9 +90,9 @@ export function drawMap() {
       } else if (background === darkSquare) { // This is just for dev-purpose
         drawRect(drawTileX, drawTileY, width, height, 'darkgrey')
       }
-      drawText(gridUnit.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2, 'black')
-      drawText(col.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2 + 8, 'black')
-      drawText(row.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2 + 16, 'black')
+      // drawText(gridUnit.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2, 'black')
+      // drawText(col.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2 + 8, 'black')
+      // drawText(row.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2 + 16, 'black')
       drawTileX += gridCellSize
     }
     drawTileY += gridCellSize

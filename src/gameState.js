@@ -177,7 +177,7 @@ export class GameState {
 
   incEnemies () {
 
-    const numberOfEnemies = 1
+    const numberOfEnemies = 100
     // const numberOfEnemies = 404 / 100 * this.level
     const directions = ['top', 'right', 'bot', 'left']
     const direction = directions[Math.floor(Math.random() * 4)]

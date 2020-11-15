@@ -10,7 +10,7 @@ export class Enemy extends Obj {
     this.id = id
     this.direction = ''
     this.originalSpeed = this.width
-    this.limit = 60
+    this.limit = 5
     this.hp = this.width + this.height
     this.ttl = 10
     this.damage = 10
@@ -95,7 +95,7 @@ export class Enemy extends Obj {
       this.limit--
       return
     }
-    this.limit = 60
+    this.limit = 5
 
     // Inside of map:
 
@@ -109,8 +109,6 @@ export class Enemy extends Obj {
     const targetsCol = grid[this.target.currentGridUnitPosition].col
     
     const { col, row } = grid[this.currentGridUnit]
-    console.log('this.target: ', targetsCol, targetsRow)
-    console.log('this: ', col, row)
     this.direction = ''
     if (targetsRow < row) {
       this.direction = 'up'
@@ -155,7 +153,6 @@ export class Enemy extends Obj {
     }
 
     if (this.currentGridUnit !== this.prevGridUnit) {
-      console.log(this.currentGridUnit)
       gameState.addToEnemiesGridPositions(this.currentGridUnit, this)
       gameState.removeFromEnemiesGridPositions(this.prevGridUnit, this.id)
     }

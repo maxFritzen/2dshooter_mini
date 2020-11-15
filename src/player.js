@@ -52,7 +52,6 @@ export class Player extends Obj {
   }
 
   shoot = () => {
-    console.log('Shoot')
     if (this.bullets <= 0) {
       setTimeout(() => {
         this.bullets = ammo * this.level / 2

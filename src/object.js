@@ -27,7 +27,6 @@ export class Obj extends Sprite {
   }
  
   hit (dmg) {
-    console.log('hit')
     this.hp -= dmg
     this.color = this.damageColor
     setTimeout(() => {
