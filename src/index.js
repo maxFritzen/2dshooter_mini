@@ -25,25 +25,36 @@ const levelOne = [
 export const playerStart = 2
 export const darkBrick = 3
 export const lightBrick = 4
-export let grid = [ ...levelOne ];
-export const gridWidth = 80;
-export const gridHeight = 60;
-export const gridCols = 800 / gridWidth;
-export const gridRows = 600 / gridHeight;
-const darkSquare = 10
+export const gridWidth = 10;
+export const gridHeight = 10;
+export const gridCellSize = 200
+export const gridCols = 800 / gridCellSize;
+export const gridRows = 600 / gridCellSize;
+export let grid = new Array(gridCols * gridRows); // 4600 if gridCellSize = 10
+export const darkSquare = 'darkSquare'
+export const typeEnemy = 'enemy'
+export const typePickup = 'pickup'
+export const typeBlood = 'blood'
+
 
 function insertSquares () {
   // To visualize grid
   for (let eachRowFirst = 0; eachRowFirst < gridRows; eachRowFirst++) {
     for (let eachColFirst = 0; eachColFirst < gridCols; eachColFirst++) {
       const index = colRowIndex(eachColFirst, eachRowFirst)
+      grid[index] = {
+        type: '',
+        background: '',
+        col: eachColFirst,
+        row: eachRowFirst
+      }
       if (eachRowFirst % 2 === 0) {
         if (eachColFirst % 2 === 0) {
-          grid[index] = darkSquare
+          grid[index].background = darkSquare
         }
       } else {
         if (eachColFirst % 2 !== 0) {
-          grid[index] = darkSquare
+          grid[index].background = darkSquare
         }
       }
     }
@@ -57,26 +68,34 @@ export function colRowIndex (col, row) {
 }
 
 export function findGridUnit (centerX, centerY) {
-  const gridCol = Math.floor(centerX / gridWidth)
-  const gridRow = Math.floor(centerY / gridHeight)
+  const gridCol = Math.floor(centerX / gridCellSize)
+  const gridRow = Math.floor(centerY / gridCellSize)
   return colRowIndex(gridCol, gridRow)
 }
 
 export function drawMap() {
   let drawTileX = 0
   let drawTileY = 0
-  const width = gridWidth
-  const height = gridHeight
+  const width = gridCellSize
+  const height = gridCellSize
   for (let eachRow = 0; eachRow < gridRows; eachRow++) {
     for (let eachCol = 0; eachCol < gridCols; eachCol++) {
       const gridUnit = colRowIndex(eachCol, eachRow)
-      if (grid[gridUnit] === darkSquare) {
+      const { type, background, col, row } = grid[gridUnit]
+      
+      if (type === typeEnemy) {
+        drawRect(drawRect(drawTileX, drawTileY, width, height, 'yellow'))
+      } else if (type === typeBlood) {
+        drawRect(drawRect(drawTileX, drawTileY, width, height, 'red'))
+      } else if (background === darkSquare) { // This is just for dev-purpose
         drawRect(drawTileX, drawTileY, width, height, 'darkgrey')
       }
       drawText(gridUnit.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2, 'black')
-      drawTileX += gridWidth
+      drawText(col.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2 + 8, 'black')
+      drawText(row.toString(), drawTileX + (width / 2) - 12, drawTileY + height/2 + 16, 'black')
+      drawTileX += gridCellSize
     }
-    drawTileY += gridHeight
+    drawTileY += gridCellSize
     drawTileX = 0
   }
 }
@@ -97,8 +116,8 @@ function getPlayerStartPos () {
 
 
 export const createNewPlayer = () => new Player(
-  150,
-  50,
+  0,
+  0,
   'blue',
   'green',
   8,

@@ -1,5 +1,5 @@
 // @ts-check
-import { findGridUnit, gameState } from './index.js'
+import { canvasHeight, canvasWidth, findGridUnit, gameState, grid, gridCellSize, gridCols, typeBlood } from './index.js'
 import { Obj } from './object.js'
 import { collision } from './helper-functions.js'
 
@@ -10,18 +10,20 @@ export class Enemy extends Obj {
     this.id = id
     this.direction = ''
     this.originalSpeed = this.width
-    this.limit = this.originalSpeed
+    this.limit = 60
     this.hp = this.width + this.height
     this.ttl = 10
     this.damage = 10
     this.prevGridUnit = null
     this.currentGridUnit = null
+
   }
 
   die () {
     // this.drop ()
-    gameState.incBlood(this.x, this.y, 0, this.width + 2, this.height + 2)
     this.ttl = 0
+    gameState.removeFromEnemiesGridPositions(this.currentGridUnit, grid[this.currentGridUnit].enemy.id)
+    grid[this.currentGridUnit].type = typeBlood
   }
 
   isAlive () {
@@ -47,6 +49,10 @@ export class Enemy extends Obj {
 
   update() {
     this.move()
+
+    if (this.currentGridUnit === this.target.currentGridUnitPosition) {
+      this.target.hit(1)
+    }
   }
 
   checkCollisionWithPlayer () {
@@ -57,83 +63,114 @@ export class Enemy extends Obj {
   }
 
   move() {
-    let newX = this.x
-    let newY = this.y
     
-    let direction = this.direction // up,down,right,left
-    const targetX = Math.floor(this.target.x)
-    const targetY = Math.floor(this.target.y)
+    // guess I should change this to targetCol and row?
+    // or update x and y according to grid[index]
 
-    if (this.x <= targetX) {
-      direction = 'right'
-      newX += 1 
-    }
-    if (this.x >= targetX) {
-      direction = 'left'
-      newX -= 1 
-    }
-    if (this.y <= targetY) {
-      direction = 'down'
-      newY += 1
-    }
-    if (this.y >= targetY) {
-      direction = 'up'
-      newY -= 1
-    }
-    this.direction = direction
-  
-    this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.height/2)
-    this.currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
-    if (this.currentGridUnit < 0 || this.currentGridUnit > gameState.enemiesGridPositions.length) {
-      this.x = newX
-      this.y = newY  
+
+    // If enemy is outside of map
+    if (this.x < 0 || this.x > canvasWidth || this.y < 0 || this.y > canvasHeight) {
+      const targetX = Math.floor(this.target.x)
+      const targetY = Math.floor(this.target.y)
+
+      if (this.x <= targetX) {
+        this.direction = 'right'
+        this.x += 1 
+      }
+      if (this.x >= targetX) {
+        this.direction = 'left'
+        this.x -= 1 
+      }
+      if (this.y <= targetY) {
+        this.direction = 'down'
+        this.y += 1
+      }
+      if (this.y >= targetY) {
+        this.direction = 'up'
+        this.y -= 1
+      } 
       return 
     }
-    if (this.currentGridUnit === this.target.currentGridUnitPosition) {
-      // Check for collision with player
-      this.checkCollisionWithPlayer()
+    if (this.limit > 0) {
+      this.limit--
+      return
+    }
+    this.limit = 60
+
+    // Inside of map:
+
+    if (this.currentGridUnit === null || this.currentGridUnit === undefined) {
+      this.currentGridUnit = findGridUnit(this.x, this.y)
+    }
+
+    this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.height/2)
+    // Find direction depending on col and row
+    const targetsRow = grid[this.target.currentGridUnitPosition].row
+    const targetsCol = grid[this.target.currentGridUnitPosition].col
+    
+    const { col, row } = grid[this.currentGridUnit]
+    console.log('this.target: ', targetsCol, targetsRow)
+    console.log('this: ', col, row)
+    this.direction = ''
+    if (targetsRow < row) {
+      this.direction = 'up'
+    }
+    if (targetsRow > row) {
+      this.direction = 'down'
+    }
+    if (targetsCol < col) {
+      this.direction = 'left'
+    }
+    if (targetsCol > col) {
+      this.direction = 'right'
+    }
+
+    // change grid depending on direction
+    switch (this.direction) {
+      case 'up': {
+        if (grid[this.currentGridUnit - gridCols]) {
+          this.currentGridUnit -= gridCols
+        }
+        break
+      }
+      case 'down': {
+        if (grid[this.currentGridUnit + gridCols]) {
+          this.currentGridUnit += gridCols
+        }
+        break
+      }
+      case 'left': {
+        if (grid[this.currentGridUnit -1]) {
+          this.currentGridUnit -= 1
+        }
+        break
+      }
+      case 'right': {
+        if (grid[this.currentGridUnit + 1]) {
+          this.currentGridUnit += 1
+        }
+        break
+      }
+
     }
 
     if (this.currentGridUnit !== this.prevGridUnit) {
-      // This will enable collision check with enemies in same gridUnit
+      console.log(this.currentGridUnit)
       gameState.addToEnemiesGridPositions(this.currentGridUnit, this)
       gameState.removeFromEnemiesGridPositions(this.prevGridUnit, this.id)
     }
 
     // check collision with other enemies
     // check collision with enemy
-    const enemies = gameState.enemiesGridPositions[this.currentGridUnit]
-    const newValues = {
-      height: this.height,
-      width: this.width,
-      x: newX,
-      y: newY
-    }
-    for (let i = 0; i <= enemies.length - 1; i++) {
-      if (enemies[i].id !== this.id && collision(newValues, enemies[i])) {
-        this.color = 'green'
-        const collidingEnemyX = enemies[i].x
-        const collidingEnemyY = enemies[i].y
-        // if dir === right OR left => go up or down
-        if (direction === 'left' || direction === 'right') {
-          if (newY < collidingEnemyY) {
-            newY -= 1
-          } else if (newY > collidingEnemyY) {
-            newY += 1
-          }
-        } else {
-          if (newX < collidingEnemyX) {
-            newX -= 1
-          } else  if (newX > collidingEnemyX) {
-            newX += 1
-          } 
-        }
-        
-      } 
-    }
 
-    this.x = newX
-    this.y = newY  
 
+    // move one grid at the time
+    // direction= 'up'
+      // cell = this.cellIndex - gridCols, right?
+      // down is + gridCols
+    // left/right = + OR - 1
+    
+    // If outside of map:
+      // Ignore gridCells, just move x and y
   }
 }

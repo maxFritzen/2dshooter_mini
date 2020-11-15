@@ -149,7 +149,6 @@ export class Player extends Obj {
     }
 
     this.stayInsideMap()
-    // this.collisionCheckEnemy()
     // this.collisionCheckPickup()
 
     this.x += Math.cos(this.angle) * this.speed;
@@ -176,19 +175,6 @@ export class Player extends Obj {
           })
 
         }
-      }
-    })
-  }
-  collisionCheckEnemy () {
-
-    const enemies = gameState.getEnemies()
-    if (this.collisionInterval) return
-    enemies.forEach((enemy) => {
-      if (collision(this, enemy)) {
-        this.hit(10)
-        this.collisionInterval = setTimeout(() => {
-          this.collisionInterval = null
-        }, 1000)
       }
     })
   }

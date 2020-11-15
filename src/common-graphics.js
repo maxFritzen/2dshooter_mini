@@ -15,7 +15,7 @@ export function drawCircle (x, y, radius, color) {
 
 export function drawText (text, x, y, color) {
   ctx.fillStyle = color
-  ctx.font = '16px helvetica'
+  ctx.font = '8px helvetica'
   ctx.fillText(text, x, y)
 }
 

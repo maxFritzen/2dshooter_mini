@@ -1,6 +1,6 @@
 // @ts-check
 import { createBlood, createFireEffect, createProjectile, createPickup } from './helper-functions.js'
-import { createNewPlayer, createEnemy, gameState, canvasWidth, canvasHeight, drawMap, grid } from './index.js'
+import { createNewPlayer, createEnemy, gameState, canvasWidth, canvasHeight, drawMap, grid, gridCellSize, typeEnemy } from './index.js'
 import { drawRect, drawStandardText } from './common-graphics.js';
 
 export class GameState {
@@ -26,21 +26,26 @@ export class GameState {
     const length = this.enemiesGridPositions.length
     for (let i = 0; i <= length -1; i++) {
       // this.enemiesGridPositions.fill([]) doesnt work because it seems to set every [] as same reference or something, interesting
-      this.enemiesGridPositions[i] = []
+      // this.enemiesGridPositions[i] = []
     }
     console.log('this.enemiesGridPositions', this.enemiesGridPositions.length)
   }
 
   addToEnemiesGridPositions (index, enemy) {
-    if (index > 0 && index < this.enemiesGridPositions.length) {
-      this.enemiesGridPositions[index].push(enemy)
+    if (index >= 0 && index < grid.length) {
+      grid[index].type = typeEnemy
+      grid[index].enemy = enemy
     }
   }
 
   removeFromEnemiesGridPositions (index, enemyId) {
-    if (this.enemiesGridPositions[index] === undefined) console.log('UNEDFINED INDEX')
-    if (this.enemiesGridPositions[index] === undefined) return
-    this.enemiesGridPositions[index] = this.enemiesGridPositions[index].filter((enemy) => enemy.id !== enemyId)
+    if (grid[index] === undefined) console.log('UNEDFINED INDEX')
+    if (grid[index] === undefined) return
+    if (grid[index].type === typeEnemy && grid[index].enemy.id === enemyId) {
+      grid[index].type = ''
+      grid[index].enemy = null
+      
+    }
   }
 
   setTimer () {
@@ -84,10 +89,10 @@ export class GameState {
     }
     
     drawRect(0, 0, canvasWidth, canvasHeight, 'grey')
-    drawMap()
-    gameState.getBlood().forEach(sprite => sprite.draw())
+    drawMap() // drawMap draws enemies and blood
+    // gameState.getBlood().forEach(sprite => sprite.draw())
     gameState.getPickups().forEach(sprite => sprite.draw())
-    gameState.getEnemies().forEach(sprite => sprite.draw())
+    // gameState.getEnemies().forEach(sprite => sprite.draw())
     gameState.getProjectiles().forEach(sprite => sprite.draw())
     gameState.getFireEffects().forEach(sprite => sprite.draw())
     gameState.getPlayer().draw();
@@ -123,7 +128,7 @@ export class GameState {
     this.player = createNewPlayer()
     this.player.addKeyListeners()
     this.player.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
-    this.setStartEnemiesGridPositions()
+    // this.setStartEnemiesGridPositions()
     this.gameIsRunning = true
     this.incEnemies()
     if (this.loop) {
@@ -209,7 +214,7 @@ export class GameState {
       // const random = Math.floor(Math.random() * 5) + 3 
       const width = 20
       const height = 50
-      this.enemies.push(createEnemy(x, y, width, height, target))
+      this.enemies.push(createEnemy(x, y, gridCellSize, gridCellSize, target))
     }
 
     
@@ -227,11 +232,11 @@ export class GameState {
   }
 
   removeFireEffects () {
-    this.fireEffects = this.fireEffects.filter(sprite => sprite.isAlive())
+    this.fireEffects = this.fireEffects.filter(x => x.isAlive())
   }
 
   removeEnemies () {
-    this.enemies = this.enemies.filter(sprite => sprite.isAlive())
+    this.enemies = this.enemies.filter(x => x.isAlive())
   }
 
   getLevel () {

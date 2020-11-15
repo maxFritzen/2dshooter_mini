@@ -1,7 +1,7 @@
 // @ts-check
 import { drawCircle, drawRect } from './common-graphics.js'
 import { collision } from './helper-functions.js'
-import { canvas, canvasHeight, canvasWidth, findGridUnit, gameState } from './index.js'
+import { canvas, canvasHeight, canvasWidth, findGridUnit, gameState, grid, typeBlood, typeEnemy } from './index.js'
 
 export class Projectile {
   constructor(startX, startY, angle) {
@@ -34,17 +34,10 @@ export class Projectile {
     this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.width/2)
     this.currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.width/2)
     if (this.prevGridUnit !== this.currentGridUnit) {
-      const newValues = {
-        height: this.width,
-        width: this.width,
-        x: this.x,
-        y: this.y
-      }
-      const enemies = gameState.enemiesGridPositions[this.currentGridUnit]
-      for(let i = 0; i < enemies.length; i++) {
-        if (collision(newValues, enemies[i])) {
-          enemies[i].die()
-        }
+      if (grid[this.currentGridUnit].type === typeEnemy) {
+        
+        grid[this.currentGridUnit].enemy.die()
+        this.ttl = 0
       }
     }
   }
