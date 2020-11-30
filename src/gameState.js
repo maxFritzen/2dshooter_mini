@@ -10,7 +10,7 @@ export class GameState {
     this.projectiles = [];
     this.fireEffects = [];
     this.pickups = []
-    this.player = null
+    this.players = []
     this.blood = []
     this.gameIsRunning = true
     this.hasStartedGame = false
@@ -69,15 +69,15 @@ export class GameState {
   }
 
   update = () => {
-    gameState.getPlayer().update();
-    gameState.getFireEffects().forEach(sprite => sprite.update())
-    gameState.getProjectiles().forEach(sprite => sprite.update())
-    gameState.getEnemies().forEach(sprite => sprite.update())
-    gameState.getBlood().forEach(sprite => sprite.update())
-    gameState.removeEnemies()
-    gameState.removeProjectiles()
-    gameState.removeFireEffects()
-    gameState.removePickups()
+    this.players.forEach((x) => x.update())
+    this.getFireEffects().forEach(sprite => sprite.update())
+    this.getProjectiles().forEach(sprite => sprite.update())
+    this.getEnemies().forEach(sprite => sprite.update())
+    this.getBlood().forEach(sprite => sprite.update())
+    this.removeEnemies()
+    this.removeProjectiles()
+    this.removeFireEffects()
+    this.removePickups()
   }
 
   draw = () => {
@@ -91,11 +91,11 @@ export class GameState {
     drawRect(0, 0, canvasWidth, canvasHeight, 'grey')
     drawMap() // drawMap draws enemies and blood
     // gameState.getBlood().forEach(sprite => sprite.draw())
-    gameState.getPickups().forEach(sprite => sprite.draw())
-    // gameState.getEnemies().forEach(sprite => sprite.draw())
-    gameState.getProjectiles().forEach(sprite => sprite.draw())
-    gameState.getFireEffects().forEach(sprite => sprite.draw())
-    gameState.getPlayer().draw();
+    this.getPickups().forEach(sprite => sprite.draw())
+    //this.getEnemies().forEach(sprite => sprite.draw())
+    this.getProjectiles().forEach(sprite => sprite.draw())
+    this.getFireEffects().forEach(sprite => sprite.draw())
+    this.players.forEach((x) => x.draw())
 
     drawStandardText('WAVE: ' + gameState.level)
     
@@ -125,9 +125,23 @@ export class GameState {
     this.projectiles = [];
     this.fireEffects = [];
     this.blood = []
-    this.player = createNewPlayer()
-    this.player.addKeyListeners()
-    this.player.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
+    this.players.push(createNewPlayer(10, 10, 'blue', 'green', 24, 12))
+    // this.players.push(createNewPlayer(10, 30, 'purple', 'orange', 24, 12))
+    // this.players.push(createNewPlayer(10, 50, 'black', 'orange', 24, 12))
+    // this.players.push(createNewPlayer(10, 60, 'yellow', 'orange', 24, 12))
+    // this.players.push(createNewPlayer(10, 70, 'red', 'orange', 24, 12))
+    // this.players.push(createNewPlayer(10, 80, 'green', 'orange', 24, 12))
+    // this.players.push(createNewPlayer(10, 90, 'orange', 'orange', 24, 12))
+    for (let i = 0; i < 100; i++) {
+      this.players.push(createNewPlayer(10, 20 + i, 'orange', 'orange'))
+    }
+    this.players.forEach((x) => {
+      x.addKeyListeners()
+      x.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
+    })
+    // this.players[0].setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
+    
+    // this.players[1].setUpControls('w', 'd', 's', 'a', 'u')
     // this.setStartEnemiesGridPositions()
     this.gameIsRunning = true
     this.incEnemies()
@@ -205,8 +219,10 @@ export class GameState {
       return y
     }
 
-
-    const target = this.getPlayer()
+    // Should probably be closest player or something
+    // and should be updated as you go
+    const random = Math.floor(Math.random() * this.players.length) + 1
+    const target = this.players[random]
 
     for (let i = 0; i < numberOfEnemies; i++) {
       const x = getX()
@@ -257,10 +273,6 @@ export class GameState {
 
   getFireEffects () {
     return this.fireEffects
-  }
-
-  getPlayer () {
-    return this.player
   }
 
 }

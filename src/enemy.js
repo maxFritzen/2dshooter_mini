@@ -33,7 +33,7 @@ export class Enemy extends Obj {
   drop () {
     // Pickup will increase playerLevel until 5, then kill all enemies
     // so decrease chance of drop
-    if (gameState.getPlayer().level < 5) {
+    if (gameState.players[0].level < 5) {
       const rand = Math.floor(Math.random() * 20)
       if (rand === 1) {
         console.log('DROP')

@@ -6,7 +6,7 @@ import { Obj } from './object.js'
 let ammo = 20
 export class Player extends Obj {
   constructor (x, y, color, damageColor, width, height, speed, hp) {
-    super(x, y, color, damageColor, width * 2, height, speed, hp)
+    super(x, y, color, damageColor, width, height, speed, hp)
     this.shootingSpeedInterval = null
     this.animationShootingSpeedInterval = 0
     this.rotateSpeedInterval = null
@@ -55,7 +55,7 @@ export class Player extends Obj {
     if (this.bullets <= 0) {
       setTimeout(() => {
         this.bullets = ammo * this.level / 2
-      }, 404)
+      }, 500)
     }
 
     if (this.shootingSpeedInterval) return
@@ -67,7 +67,7 @@ export class Player extends Obj {
         this.bullets -= 1
         this.shootingSpeedInterval = setTimeout(() => {
           this.shootingSpeedInterval = null
-        }, 404 / this.level)
+        }, 100)
       }
   }
 

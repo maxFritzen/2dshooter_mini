@@ -7,7 +7,7 @@ export class Projectile {
   constructor(startX, startY, angle) {
     this.x = startX,
     this.y = startY
-    this.width = 10
+    this.width = 5
     this.speed = 10
     this.angle = angle
     this.color = 'green'

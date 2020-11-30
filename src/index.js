@@ -115,15 +115,24 @@ function getPlayerStartPos () {
 }
 
 
-export const createNewPlayer = () => new Player(
-  0,
-  0,
-  'blue',
-  'green',
-  8,
-  5,
-  0, // Not sure about speed
-  10 
+export const createNewPlayer = (
+  x = 0,
+  y = 0,
+  color = 'blue',
+  dmgColor = 'green',
+  width = 8,
+  height = 5,
+  speed = 0,
+  hp = 10
+) => new Player(
+  x,
+  y,
+  color,
+  dmgColor,
+  width,
+  height,
+  speed, // Not sure about speed
+  hp 
 )
 
 export const createEnemy = (x, y, width, height, target) => new Enemy(
