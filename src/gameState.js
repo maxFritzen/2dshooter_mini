@@ -125,23 +125,23 @@ export class GameState {
     this.projectiles = [];
     this.fireEffects = [];
     this.blood = []
-    this.players.push(createNewPlayer(10, 10, 'blue', 'green', 24, 12))
-    // this.players.push(createNewPlayer(10, 30, 'purple', 'orange', 24, 12))
+    this.players.push(createNewPlayer(10, 10, 'blue', 'green'))
+    this.players.push(createNewPlayer(10, 30, 'purple', 'orange', 24, 12))
     // this.players.push(createNewPlayer(10, 50, 'black', 'orange', 24, 12))
     // this.players.push(createNewPlayer(10, 60, 'yellow', 'orange', 24, 12))
     // this.players.push(createNewPlayer(10, 70, 'red', 'orange', 24, 12))
     // this.players.push(createNewPlayer(10, 80, 'green', 'orange', 24, 12))
     // this.players.push(createNewPlayer(10, 90, 'orange', 'orange', 24, 12))
-    for (let i = 0; i < 100; i++) {
-      this.players.push(createNewPlayer(10, 20 + i, 'orange', 'orange'))
+    for (let i = 0; i < 2; i++) {
+      // this.players.push(createNewPlayer(10, 20 * i, 'orange', 'orange'))
     }
     this.players.forEach((x) => {
       x.addKeyListeners()
-      x.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
+      // x.setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
     })
-    // this.players[0].setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
+    this.players[0].setUpControls('ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft', ' ')
     
-    // this.players[1].setUpControls('w', 'd', 's', 'a', 'u')
+    this.players[1].setUpControls('w', 'd', 's', 'a', 'u')
     // this.setStartEnemiesGridPositions()
     this.gameIsRunning = true
     this.incEnemies()
@@ -221,7 +221,7 @@ export class GameState {
 
     // Should probably be closest player or something
     // and should be updated as you go
-    const random = Math.floor(Math.random() * this.players.length) + 1
+    const random = Math.floor(Math.random() * this.players.length)
     const target = this.players[random]
 
     for (let i = 0; i < numberOfEnemies; i++) {
@@ -230,6 +230,7 @@ export class GameState {
       // const random = Math.floor(Math.random() * 5) + 3 
       const width = 20
       const height = 50
+  
       this.enemies.push(createEnemy(x, y, gridCellSize, gridCellSize, target))
     }
 

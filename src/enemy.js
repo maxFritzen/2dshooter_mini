@@ -1,7 +1,18 @@
 // @ts-check
-import { canvasHeight, canvasWidth, findGridUnit, gameState, grid, gridCellSize, gridCols, typeBlood } from './index.js'
+import { canvasHeight, canvasWidth, findGridUnit, gameState, grid, gridCellSize, gridCols, gridRows, typeBlood } from './index.js'
 import { Obj } from './object.js'
 import { collision } from './helper-functions.js'
+const FIND_CLOSEST_TARGET_TIMER = 100
+const MOVE_TIMER = 0
+
+const getDistance = (myCol, myRow, targetCol, targetRow) => {
+  // Math.abs because -2 should count same as +2
+  // Distance now is The amount of steps needed rather than actual distance
+  const rowDistance = Math.abs(myRow - targetRow)
+  const colDistance = Math.abs(myCol - targetCol)
+  const distance = rowDistance + colDistance
+  return distance
+}
 
 export class Enemy extends Obj {
   constructor (x, y, color, damageColor, width, height, speed, hp, target, id) {
@@ -16,7 +27,8 @@ export class Enemy extends Obj {
     this.damage = 10
     this.prevGridUnit = null
     this.currentGridUnit = null
-
+    this.findClosestTargetTimer = FIND_CLOSEST_TARGET_TIMER
+    this.moveTimer = MOVE_TIMER
   }
 
   die () {
@@ -30,13 +42,49 @@ export class Enemy extends Obj {
     return this.ttl > 0
   }
 
+  findClosestTarget = () => {
+    // perf optmization suggestions: 
+      //* Every enemy dosnt have to check this every time
+      //* Is an enemy close to another? They will probably have same target
+    if (this.findClosestTargetTimer > 0 || !this.currentGridUnit) {
+      this.findClosestTargetTimer--
+      return
+    }
+    this.findClosestTargetTimer = FIND_CLOSEST_TARGET_TIMER
+    console.log('target: ', this.target.color);
+    const myCol = grid[this.currentGridUnit].col
+    const myRow = grid[this.currentGridUnit].row
+    // get row and column of a player
+    const currentTargetDistance = getDistance(
+      myCol,
+      myRow,
+      grid[this.target.currentGridUnitPosition].col,
+      grid[this.target.currentGridUnitPosition].row
+    )
+
+    gameState.players.forEach((player) => {
+      const distance = getDistance(
+        myCol,
+        myRow,
+        grid[player.currentGridUnitPosition].col,
+        grid[player.currentGridUnitPosition].row
+      )
+      if (distance < currentTargetDistance) {
+        // change target
+        console.log('change target to', player.color)
+        this.target = player
+      }
+    })
+
+  }
+
+
   drop () {
     // Pickup will increase playerLevel until 5, then kill all enemies
     // so decrease chance of drop
     if (gameState.players[0].level < 5) {
       const rand = Math.floor(Math.random() * 20)
       if (rand === 1) {
-        console.log('DROP')
         gameState.incPickup(this.x, this.y)
       }
     } else {
@@ -49,6 +97,7 @@ export class Enemy extends Obj {
 
   update() {
     this.move()
+    this.findClosestTarget()
 
     if (this.currentGridUnit === this.target.currentGridUnitPosition) {
       this.target.hit(1)
@@ -63,6 +112,11 @@ export class Enemy extends Obj {
   }
 
   move() {
+    if (this.moveTimer > 0) {
+      this.moveTimer--
+      return
+    }
+    this.moveTimer = MOVE_TIMER
     
     // guess I should change this to targetCol and row?
     // or update x and y according to grid[index]
