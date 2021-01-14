@@ -1,6 +1,6 @@
 // @ts-check
 import { collision, degToRad } from './helper-functions.js'
-import { canvasHeight, canvasWidth, ctx, findGridUnit, gameState } from './index.js'
+import { canvasHeight, canvasWidth, ctx, findGridUnit, gameState, grid } from './index.js'
 import { Obj } from './object.js'
 
 let ammo = 20
@@ -155,8 +155,9 @@ export class Player extends Obj {
 
     // which grid unit am I in?
     const currentGridUnit = findGridUnit(this.x + this.width/2, this.y + this.height/2)
-
-    this.currentGridUnitPosition = currentGridUnit
+    if (grid[currentGridUnit]) {
+      this.currentGridUnitPosition = currentGridUnit
+    }
     
   } 
 

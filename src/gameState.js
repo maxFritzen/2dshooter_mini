@@ -7,6 +7,7 @@ export class GameState {
   constructor () {
     this.level = 1;
     this.enemies = [];
+    this.enemyIndexToFindTarget = 0
     this.projectiles = [];
     this.fireEffects = [];
     this.pickups = []
@@ -78,6 +79,13 @@ export class GameState {
     this.removeProjectiles()
     this.removeFireEffects()
     this.removePickups()
+    if (this.enemies[this.enemyIndexToFindTarget]) {
+      this.enemies[this.enemyIndexToFindTarget].findClosestTarget()
+    }
+    this.enemyIndexToFindTarget++
+    if (this.enemyIndexToFindTarget > this.enemies.length) {
+      this.enemyIndexToFindTarget = -100
+    }
   }
 
   draw = () => {
@@ -219,7 +227,7 @@ export class GameState {
       return y
     }
 
-    // Should probably be closest player or something
+    // Target should probably be closest player or something
     // and should be updated as you go
     const random = Math.floor(Math.random() * this.players.length)
     const target = this.players[random]

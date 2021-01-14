@@ -43,18 +43,14 @@ export class Enemy extends Obj {
   }
 
   findClosestTarget = () => {
-    // perf optmization suggestions: 
-      //* Every enemy dosnt have to check this every time
-      //* Is an enemy close to another? They will probably have same target
-    if (this.findClosestTargetTimer > 0 || !this.currentGridUnit) {
-      this.findClosestTargetTimer--
+
+    if (!grid[this.currentGridUnit]) {
       return
     }
-    this.findClosestTargetTimer = FIND_CLOSEST_TARGET_TIMER
-    console.log('target: ', this.target.color);
     const myCol = grid[this.currentGridUnit].col
     const myRow = grid[this.currentGridUnit].row
     // get row and column of a player
+    
     const currentTargetDistance = getDistance(
       myCol,
       myRow,
@@ -71,7 +67,6 @@ export class Enemy extends Obj {
       )
       if (distance < currentTargetDistance) {
         // change target
-        console.log('change target to', player.color)
         this.target = player
       }
     })
@@ -97,7 +92,6 @@ export class Enemy extends Obj {
 
   update() {
     this.move()
-    this.findClosestTarget()
 
     if (this.currentGridUnit === this.target.currentGridUnitPosition) {
       this.target.hit(1)
@@ -159,6 +153,7 @@ export class Enemy extends Obj {
 
     this.prevGridUnit = this.currentGridUnit ?? findGridUnit(this.x + this.width/2, this.y + this.height/2)
     // Find direction depending on col and row
+    
     const targetsRow = grid[this.target.currentGridUnitPosition].row
     const targetsCol = grid[this.target.currentGridUnitPosition].col
     
@@ -175,6 +170,12 @@ export class Enemy extends Obj {
     }
     if (targetsCol > col) {
       this.direction = 'right'
+    }
+
+    // Some randomness in enemy movement
+    const random = Math.random()
+    if (random <= 0.5) {
+      this.direction = ''
     }
 
     // change grid depending on direction
